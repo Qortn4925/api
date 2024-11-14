@@ -22,6 +22,7 @@ public class BoardController {
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Board board) {
 
+       
         if (service.add(board)) {
             return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
                             "text", board.getId() + "번 게시물이 등록되었습니다"),

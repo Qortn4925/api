@@ -10,6 +10,7 @@ export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [writer, setWriter] = useState("");
+  const [progress, setProgress] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,6 +21,8 @@ export function BoardAdd() {
   // map을 반환해 , 메세지와, boardList를 반환, 그걸 토스터에 출력하고
   // 작성한 게시글로 옮김
   const handleSaveClick = () => {
+    setProgress(true);
+
     axios
       .post("/api/board/add", {
         //   객체로 보낼 속성명과 ,  넘겨줄 변수명이 같으면 생략 가능
@@ -37,13 +40,16 @@ export function BoardAdd() {
         });
         navigate(`/view/${data.data.id}`);
       })
+
       .catch((e) => {
         const message = e.response.data.message;
-
         toaster.create({
           description: message.text,
           type: message.type,
         });
+      })
+      .finally(() => {
+        setProgress(false);
       });
   };
   return (
@@ -63,7 +69,9 @@ export function BoardAdd() {
           <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
         </Field>
         <Box>
-          <Button onClick={handleSaveClick}>저장</Button>
+          <Button loading={progress} onClick={handleSaveClick}>
+            저장
+          </Button>
         </Box>
       </Stack>
     </Box>
