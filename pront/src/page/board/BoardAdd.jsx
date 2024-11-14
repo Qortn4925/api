@@ -52,6 +52,8 @@ export function BoardAdd() {
         setProgress(false);
       });
   };
+  //  빈 제목이나 본문을 작성할 수 없게
+  const disabled = !(title.trim().length > 0 && content.trim().length > 0);
   return (
     <Box>
       <h3> 안녕</h3>
@@ -69,7 +71,11 @@ export function BoardAdd() {
           <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
         </Field>
         <Box>
-          <Button loading={progress} onClick={handleSaveClick}>
+          <Button
+            disabled={disabled}
+            loading={progress}
+            onClick={handleSaveClick}
+          >
             저장
           </Button>
         </Box>

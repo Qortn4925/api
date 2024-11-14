@@ -40,5 +40,10 @@ public class BoardService {
         return title && content;
     }
 
+    public boolean remove(int id) {
+        int cnt = mapper.deleteById(id);
+        return cnt == 1;
+    }
+
     ;
 }
