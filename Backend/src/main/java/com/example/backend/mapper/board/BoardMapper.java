@@ -3,6 +3,9 @@ package com.example.backend.mapper.board;
 import com.example.backend.dto.board.Board;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface BoardMapper {
@@ -15,4 +18,11 @@ public interface BoardMapper {
             values (#{title},#{content},#{writer})
             """)
     int insert(Board board);
+
+    @Select("""
+                SELECT  *
+                FROM board
+                order by id desc
+            """)
+    List<Board> selectAll();
 }

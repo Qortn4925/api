@@ -4,7 +4,7 @@ import axios from "axios";
 
 export function BoardList() {
   useEffect(() => {
-    axios.get("/api/board/list");
+    axios.get("/api/board/list").then();
   }, []);
   return (
     <Box>
