@@ -94,6 +94,11 @@ export function BoardView() {
               </DialogFooter>
             </DialogContent>
           </DialogRoot>
+          <Box>
+            <Button onClick={() => navigate(`/edit/${board.id}`)} bg={"cyan"}>
+              수정
+            </Button>
+          </Box>
         </Box>
       </Stack>
     </Box>
