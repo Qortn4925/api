@@ -23,5 +23,10 @@ public class BoardService {
         return mapper.selectAll();
     }
 
+    public Board get(int id) {
+
+        return mapper.selectById(id);
+    }
+
     ;
 }

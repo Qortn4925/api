@@ -3,6 +3,7 @@ package com.example.backend.mapper.board;
 import com.example.backend.dto.board.Board;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public interface BoardMapper {
                         (title,content,writer)
             values (#{title},#{content},#{writer})
             """)
+    @Options(keyProperty = "id", useGeneratedKeys = true)
     int insert(Board board);
 
     @Select("""
@@ -25,4 +27,11 @@ public interface BoardMapper {
                 order by id desc
             """)
     List<Board> selectAll();
+
+    @Select("""
+            select * 
+            from board
+            where  id=#{id}
+            """)
+    Board selectById(int id);
 }

@@ -14,7 +14,8 @@ export function BoardList() {
   }, []);
 
   function handleRowClick(id) {
-    // react-router
+    // react-router  > get 방식으로
+    // 해당 버튼의  id를 클릭시  id값을 파라미터에 넘겨주면서
     navigate(`/view/${id}`);
   }
 
