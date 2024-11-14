@@ -31,5 +31,14 @@ public class BoardService {
         return mapper.selectById(id);
     }
 
+    public boolean validate(Board board) {
+
+        boolean title = board.getTitle().trim().length() > 0;
+        boolean content = board.getContent().trim().length() > 0;
+
+
+        return title && content;
+    }
+
     ;
 }

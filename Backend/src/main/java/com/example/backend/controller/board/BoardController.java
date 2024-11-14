@@ -14,6 +14,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BoardController {
 
+
     final BoardService service;
 
     //    @RequestBody 어노테이션을 사용하여 클라이언트에서 보내는 JSON 데이터를
@@ -22,17 +23,21 @@ public class BoardController {
     @PostMapping("add")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Board board) {
 
-       
-        if (service.add(board)) {
-            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
-                            "text", board.getId() + "번 게시물이 등록되었습니다"),
-                    "data", board));
-        } else {
-            return ResponseEntity.internalServerError().body(Map.of("message",
-                    Map.of("type",
-                            "warning", "text", "게시물 등록이 실패")));
-        }
+        if (service.validate(board)) {
 
+
+            if (service.add(board)) {
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                                "text", board.getId() + "번 게시물이 등록되었습니다"),
+                        "data", board));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of("message",
+                        Map.of("type",
+                                "warning", "text", "게시물 등록이 실패")));
+            }
+        } else {
+            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning", "text", "제목이나 본문이 비어있을수 없습니다.")));
+        }
     }
 
     @GetMapping("list")
