@@ -20,7 +20,7 @@ public interface BoardMapper {
     int insert(Board board);
 
     @Select("""
-                SELECT  *
+                SELECT   id,title,writer ,inserted
                 FROM board
                 order by id desc
             """)
