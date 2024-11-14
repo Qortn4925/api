@@ -4,6 +4,7 @@ import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
@@ -12,6 +13,12 @@ export function BoardAdd() {
 
   const navigate = useNavigate();
 
+  // 글 작성 에서 >  저장 버튼 클릭시
+  // spring에서  api/board/add에서 > 보드를 추가하고
+  // 리턴 받는 코드였는데
+  //  메세지를 추가하고 싶어서  map을 이용하고 , mapper의 결과가 1 즉 성공일때
+  // map을 반환해 , 메세지와, boardList를 반환, 그걸 토스터에 출력하고
+  // 작성한 게시글로 옮김
   const handleSaveClick = () => {
     axios
       .post("/api/board/add", {
@@ -21,13 +28,15 @@ export function BoardAdd() {
         writer: writer,
       })
       .then((res) => res.data)
-      .then((data) => navigate(`view/${data.data.id}`)
+      .then((data) => {
         const message = data.message;
-      toaster.create({
-        description:message.text,
 
-      })
-      );
+        toaster.create({
+          description: message.text,
+          type: message.type,
+        });
+        navigate(`/view/${data.data.id}`);
+      });
   };
   return (
     <Box>
