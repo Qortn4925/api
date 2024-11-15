@@ -45,5 +45,9 @@ public class BoardService {
         return cnt == 1;
     }
 
+    public void update(Board board) {
+        mapper.update(board);
+    }
+
     ;
 }

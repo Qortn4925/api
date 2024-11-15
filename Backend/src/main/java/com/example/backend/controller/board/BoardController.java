@@ -49,7 +49,6 @@ public class BoardController {
     public Board view(@PathVariable int id) {
 
         Board board = service.get(id);
-        System.out.println("board = " + board);
         return board;
     }
 
@@ -61,5 +60,11 @@ public class BoardController {
             return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "게시글 삭제 중 문제가 발생하였습니다.")));
         }
 
+    }
+
+    @PutMapping("update")
+    public void update(@RequestBody Board board) {
+        System.out.println("board = " + board);
+        service.update(board);
     }
 }
