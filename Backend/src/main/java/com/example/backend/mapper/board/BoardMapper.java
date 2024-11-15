@@ -22,8 +22,9 @@ public interface BoardMapper {
                 SELECT   id,title,writer ,inserted
                 FROM board
                 order by id desc
+                LIMIT #{offset}  , 10
             """)
-    List<Board> selectAll();
+    List<Board> selectPage(Integer offset);
 
     @Select("""
             select * 

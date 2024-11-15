@@ -9,5 +9,12 @@ create table board
     inserted Datetime default now()
 );
 
-select *
+select count(*)
+from board;
+
+# 페이지 연습용 복붙
+
+Insert into board
+    (title, content, writer)
+select title, content, writer
 from board;

@@ -41,8 +41,9 @@ public class BoardController {
     }
 
     @GetMapping("list")
-    public List<Board> list() {
-        return service.list();
+    public List<Board> list(@RequestParam(name = "page") Integer page) {
+        
+        return service.list(page);
     }
 
     @GetMapping("view/{id}")
