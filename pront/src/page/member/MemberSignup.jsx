@@ -11,6 +11,7 @@ export function MemberSignup() {
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
+  const [disabled, setDisabled] = useState(false);
 
   function handleSaveClick() {
     axios
@@ -30,6 +31,7 @@ export function MemberSignup() {
           type: message.type,
           description: message.text,
         });
+        setDisabled(e.data.available);
       })
       .finally(() => {
         console.log("항상");
@@ -37,7 +39,19 @@ export function MemberSignup() {
   }
 
   const handleIdCheckClick = () => {
-    axios.post("/api/member/checkid", { id });
+    axios
+      .get("/api/member/checkid", {
+        params: {
+          id: id,
+        },
+      })
+      .then((res) => {
+        const message = res.data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      });
   };
   return (
     <Box>
@@ -64,7 +78,10 @@ export function MemberSignup() {
           />
         </Field>
         <Box>
-          <Button onClick={handleSaveClick}> 가입 </Button>
+          <Button disabled={!disabled} onClick={handleSaveClick}>
+            {" "}
+            가입{" "}
+          </Button>
         </Box>
       </Stack>
     </Box>

@@ -16,4 +16,8 @@ public class MemberService {
         int cnt = mapper.signUp(member);
         return cnt == 1;
     }
+
+    public boolean checkId(String id) {
+        return id != mapper.check(id);
+    }
 }

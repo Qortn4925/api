@@ -5,10 +5,7 @@ import com.example.backend.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -34,7 +31,19 @@ public class MemberController {
 
     }
 
-    @PostMapping("checkid")
-    public ResponseEntity<Map<String, Object>> checkid(@RequestBody Member member) {
+    @GetMapping("checkid")
+    public ResponseEntity<Map<String, Object>> checkid(@RequestParam String id) {
+        if (service.checkId(id)) {
+            // 이미 있으면
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "warning", "text", "이미 사용중인 아이디 입니다."),
+                    "available", false)
+            );
+        } else {
+            // 없으면
+            return ResponseEntity.ok().body(Map.of(
+                    "message", Map.of("type", "info", "text", "사용 가능한 아이디 입니다."),
+                    "available", true));
+        }
     }
 }
