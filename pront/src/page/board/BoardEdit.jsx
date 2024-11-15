@@ -43,6 +43,9 @@ export function BoardEdit() {
   if (board === null) {
     return <Spinner />;
   }
+  const disabled = !(
+    board.title.trim().length > 0 && board.content.trim().length > 0
+  );
   return (
     <Box>
       <h3>{id}번 게시물 수정 화면</h3>
@@ -62,7 +65,7 @@ export function BoardEdit() {
         <Box>
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger asChild>
-              <Button bg={"cyan"} variant={"outline"}>
+              <Button bg={"cyan"} variant={"outline"} disabled={disabled}>
                 {" "}
                 수정
               </Button>
