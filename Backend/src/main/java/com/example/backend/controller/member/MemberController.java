@@ -33,4 +33,8 @@ public class MemberController {
         }
 
     }
+
+    @PostMapping("checkid")
+    public ResponseEntity<Map<String, Object>> checkid(@RequestBody Member member) {
+    }
 }

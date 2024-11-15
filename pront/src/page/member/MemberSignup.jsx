@@ -1,4 +1,4 @@
-import { Box, Input, Stack } from "@chakra-ui/react";
+import { Box, Group, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useState } from "react";
@@ -36,13 +36,19 @@ export function MemberSignup() {
       });
   }
 
+  const handleIdCheckClick = () => {
+    axios.post("/api/member/checkid", { id });
+  };
   return (
     <Box>
       <h3> 회원가입</h3>
       <Stack gap={5}>
-        <Field label={"아이디"}>
+        <Group attached w={"100%"}>
           <Input value={id} onChange={(e) => setId(e.target.value)} />
-        </Field>
+          <Button onClick={handleIdCheckClick} variant={"outline"}>
+            중복확인
+          </Button>
+        </Group>
 
         <Field label={"비밀번호"}>
           <Input
