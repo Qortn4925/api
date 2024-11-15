@@ -40,9 +40,12 @@ public class BoardController {
     }
 
     @GetMapping("list")
-    public Map<String, Object> list(@RequestParam(name = "page") Integer page) {
+    public Map<String, Object> list(@RequestParam(name = "page", defaultValue = "1") Integer page,
+                                    @RequestParam(name = "st", defaultValue = "all") String type,
+                                    @RequestParam(name = "sk", defaultValue = "") String keyword
+    ) {
 //        int boardCount = service.count();
-        return service.list(page);
+        return service.list(page, type, keyword);
     }
 
     @GetMapping("view/{id}")

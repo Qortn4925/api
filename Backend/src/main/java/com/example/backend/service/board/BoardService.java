@@ -22,8 +22,9 @@ public class BoardService {
 //        return false;
     }
 
-    public Map<String, Object> list(Integer page) {
-        return Map.of("list", mapper.selectPage((page - 1) * 10), "count", mapper.countAll());
+    public Map<String, Object> list(Integer page, String type, String keyword) {
+
+        return Map.of("list", mapper.selectPage((page - 1) * 10, type, keyword), "count", mapper.countAll());
 
     }
 
