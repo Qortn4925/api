@@ -22,7 +22,7 @@ export function MemberSignup() {
           type: message.type,
           description: message.text,
         });
-        //TODO:login 으로 이동 아직 안 만듬
+        //TODO:login 으로 이동 아직 안 만듬 , +  깃허브 커밋된 마지막꺼 안함
         navigate("/");
       })
       .catch((e) => {
