@@ -59,8 +59,18 @@ public interface BoardMapper {
     int update(Board board);
 
     @Select("""
-                    select count(*)
-                    from board
+            <script>
+            SELECT COUNT(*) FROM board
+            WHERE 
+                <trim prefixOverrides="OR">
+                    <if test="searchType == 'all' or searchType == 'title'">
+                        title LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                    <if test="searchType == 'all' or searchType == 'content'">
+                     OR content LIKE CONCAT('%', #{keyword}, '%')
+                    </if>
+                </trim>
+            </script>
             """)
-    int countAll();
+    Integer countAll(String searchType, String keyword);
 }

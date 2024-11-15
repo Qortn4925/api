@@ -18,8 +18,13 @@ export function BoardList() {
   const navigate = useNavigate();
   //쿼리  URLSearchParmas 객체 반환
   const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState({
+    // 병합 널이면 > 우항
+    type: searchParams.get("st") ?? "all",
+    // 병합 연산자
+    keyword: searchParams.get("sk") ?? searchParams.get("sk"),
+  });
   const [count, setCount] = useState(0);
-  const [search, setSearch] = useState({ type: "all", keyword: "" });
 
   useEffect(() => {
     // config 의 params 속성을 이용해 , requset 할때 파람을 붙여서 갈 수 있고
