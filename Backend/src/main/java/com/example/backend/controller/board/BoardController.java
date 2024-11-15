@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -41,8 +40,8 @@ public class BoardController {
     }
 
     @GetMapping("list")
-    public List<Board> list(@RequestParam(name = "page") Integer page) {
-        
+    public Map<String, Object> list(@RequestParam(name = "page") Integer page) {
+//        int boardCount = service.count();
         return service.list(page);
     }
 

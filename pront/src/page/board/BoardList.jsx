@@ -1,4 +1,4 @@
-import { Box, HStack, Table } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Table } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -8,22 +8,33 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
+import {
+  NativeSelectField,
+  NativeSelectRoot,
+} from "../../components/ui/native-select.jsx";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
   const navigate = useNavigate();
   //쿼리  URLSearchParmas 객체 반환
   const [searchParams, setSearchParams] = useSearchParams();
+  const [count, setCount] = useState(0);
+  const [search, setSearch] = useState({ type: "all", keyword: "" });
+
   useEffect(() => {
     // config 의 params 속성을 이용해 , requset 할때 파람을 붙여서 갈 수 있고
     const controller = new AbortController();
+
     axios
       .get("/api/board/list", {
         params: searchParams,
         signal: controller.signal,
       })
       .then((res) => res.data)
-      .then((d) => setBoardList(d));
+      .then((d) => {
+        setCount(d.count);
+        setBoardList(d.list);
+      });
     return () => {
       controller.abort();
     };
@@ -43,6 +54,24 @@ export function BoardList() {
     const nextSearchParams = new URLSearchParams(searchParams);
     nextSearchParams.set("page", e.page);
     setSearchParams(nextSearchParams);
+  }
+
+  function handelSearchClick() {
+    console.log(search);
+    console.log("버튼실행");
+    if (search.keyword.trim().length > 0) {
+      // 검색
+      const nextSearchParams = new URLSearchParams(searchParams);
+      //param에 붙임
+      nextSearchParams.set("st", search.type);
+      nextSearchParams.set("sk", search.keyword);
+      setSearchParams(nextSearchParams);
+    } else {
+      // 검색 안함
+      const nextSearchParam = new URLSearchParams(searchParams);
+      nextSearchParam.delete("st");
+      nextSearchParam.delete("sk");
+    }
   }
 
   return (
@@ -69,11 +98,29 @@ export function BoardList() {
           ))}
         </Table.Body>
       </Table.Root>
+      <HStack>
+        <NativeSelectRoot
+          onChange={(e) => setSearch({ ...search, type: e.target.value })}
+        >
+          <NativeSelectField
+            items={[
+              { label: "전체", value: "all" },
+              { label: "제목", value: "title" },
+              { label: "본문", value: "content" },
+            ]}
+          />
+        </NativeSelectRoot>
+        <Input
+          onChange={(e) =>
+            setSearch({ ...search, keyword: e.target.value.trim() })
+          }
+        />
+        <Button onClick={handelSearchClick}>검색</Button>
+      </HStack>
       <PaginationRoot
         onPageChange={handlePageChange}
-        count={1500}
+        count={count}
         pageSize={10}
-        defaultPage={1}
         page={page}
       >
         <HStack>

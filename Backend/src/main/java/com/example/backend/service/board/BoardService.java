@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional    // 한 번에  성공 또는 실패해야 하니까 
@@ -22,8 +22,9 @@ public class BoardService {
 //        return false;
     }
 
-    public List<Board> list(Integer page) {
-        return mapper.selectPage((page - 1) * 10);
+    public Map<String, Object> list(Integer page) {
+        return Map.of("list", mapper.selectPage((page - 1) * 10), "count", mapper.countAll());
+
     }
 
     public Board get(int id) {

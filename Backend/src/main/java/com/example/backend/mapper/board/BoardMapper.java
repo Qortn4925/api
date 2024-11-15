@@ -45,4 +45,10 @@ public interface BoardMapper {
                     where id=#{id}
             """)
     int update(Board board);
+
+    @Select("""
+                    select count(*)
+                    from board
+            """)
+    int countAll();
 }
