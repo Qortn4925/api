@@ -46,6 +46,7 @@ export function BoardEdit() {
   const disabled = !(
     board.title.trim().length > 0 && board.content.trim().length > 0
   );
+
   return (
     <Box>
       <h3>{id}번 게시물 수정 화면</h3>

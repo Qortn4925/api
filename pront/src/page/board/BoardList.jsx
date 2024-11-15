@@ -8,10 +8,6 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
-import {
-  NativeSelectField,
-  NativeSelectRoot,
-} from "../../components/ui/native-select.jsx";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -20,12 +16,13 @@ export function BoardList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState({
     // 병합 널이면 > 우항
-    type: searchParams.get("st") ?? "all",
+    type: "all",
     // 병합 연산자
-    keyword: searchParams.get("sk") ?? searchParams.get("sk"),
+    keyword: "",
   });
   const [count, setCount] = useState(0);
 
+  // param
   useEffect(() => {
     // config 의 params 속성을 이용해 , requset 할때 파람을 붙여서 갈 수 있고
     const controller = new AbortController();
@@ -43,6 +40,23 @@ export function BoardList() {
     return () => {
       controller.abort();
     };
+  }, [searchParams]);
+
+  useEffect(() => {
+    const nextSearch = { ...search };
+
+    if (searchParams.get("st")) {
+      nextSearch.type = searchParams.get("st");
+    } else {
+      nextSearch.type = "all";
+    }
+    if (searchParams.get("sk")) {
+      nextSearch.keyword = searchParams.get("sk");
+    } else {
+      nextSearch.keyword = "";
+    }
+
+    setSearch(nextSearch);
   }, [searchParams]);
 
   function handleRowClick(id) {
@@ -112,18 +126,30 @@ export function BoardList() {
         <p> 조회된 결과가 없습니다.</p>
       )}
       <HStack>
-        <NativeSelectRoot
-          onChange={(e) => setSearch({ ...search, type: e.target.value })}
-        >
-          <NativeSelectField
-            items={[
-              { label: "전체", value: "all" },
-              { label: "제목", value: "title" },
-              { label: "본문", value: "content" },
-            ]}
-          />
-        </NativeSelectRoot>
+        {/*    차크라유아이*/}
+        {/*<NativeSelectRoot*/}
+        {/*  onChange={(e) => setSearch({ ...search, type: e.target.value })}*/}
+        {/*>*/}
+        {/*  <NativeSelectField*/}
+        {/*    items={[*/}
+        {/*      { label: "전체", value: "all" },*/}
+        {/*      { label: "제목", value: "title" },*/}
+        {/*      { label: "본문", value: "content" },*/}
+        {/*    ]}*/}
+        {/*  />*/}
+        {/*</NativeSelectRoot>*/}
+        <Box>
+          <select
+            value={search.type}
+            onChange={(e) => setSearch({ ...search, type: e.target.value })}
+          >
+            <option value={"all"}>전체</option>
+            <option value={"title"}>제목</option>
+            <option value={"content"}>본문</option>
+          </select>
+        </Box>
         <Input
+          value={search.keyword}
           onChange={(e) =>
             setSearch({ ...search, keyword: e.target.value.trim() })
           }
