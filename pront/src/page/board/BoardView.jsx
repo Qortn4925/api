@@ -26,7 +26,6 @@ export function BoardView() {
   useEffect(() => {
     axios.get(`/api/board/view/${id}`).then((res) => {
       setBoard(res.data);
-      console.log(board);
     });
   }, []);
   if (board === null) {

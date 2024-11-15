@@ -63,8 +63,16 @@ public class BoardController {
     }
 
     @PutMapping("update")
-    public void update(@RequestBody Board board) {
-        System.out.println("board = " + board);
-        service.update(board);
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Board board) {
+        if (service.update(board)) {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                    "text", board.getId() + "번 게시판 수정이 완료되었습니다."
+            )));
+        } else {
+            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "error",
+                    "text", board.getId() + "번 게시판 수정 실패!"
+            )));
+        }
+
     }
 }
