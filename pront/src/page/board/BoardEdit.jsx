@@ -51,7 +51,7 @@ export function BoardEdit() {
     <Box>
       <h3>{id}번 게시물 수정 화면</h3>
       <Stack gap={5}>
-        <Field>
+        <Field label={"제목"}>
           <Input
             value={board.title}
             onChange={(e) => setBoard({ ...board, title: e.target.value })}
