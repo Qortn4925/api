@@ -70,6 +70,7 @@ export function BoardList() {
       //param에 붙임
       nextSearchParams.set("st", search.type);
       nextSearchParams.set("sk", search.keyword);
+      nextSearchParams.set("page", 1);
       setSearchParams(nextSearchParams);
     } else {
       // 검색 안함
