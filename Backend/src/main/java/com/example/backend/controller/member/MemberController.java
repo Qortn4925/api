@@ -52,4 +52,10 @@ public class MemberController {
     public List<Member> list() {
         return service.list();
     }
+
+    @GetMapping("{id}")
+    public Member get(@PathVariable String id) {
+
+        return service.get(id);
+    }
 }
