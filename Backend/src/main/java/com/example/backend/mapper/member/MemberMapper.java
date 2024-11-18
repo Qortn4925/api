@@ -1,6 +1,7 @@
 package com.example.backend.mapper.member;
 
 import com.example.backend.dto.member.Member;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -37,4 +38,11 @@ public interface MemberMapper {
                         where id=#{id}
             """)
     Member selectById(String id);
+
+
+    @Delete("""
+                delete from member
+            where id= #{id}
+            """)
+    int deleteById(String id);
 }
