@@ -9,13 +9,15 @@ import { useNavigate } from "react-router-dom";
 export function MemberSignup() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [description, setDescription] = useState("");
+  const [idCheck, setIdCheck] = useState(false);
+  const [passwordCheck, setPasswordCheck] = useState("");
   const navigate = useNavigate();
-  const [disabled, setDisabled] = useState(false);
 
   function handleSaveClick() {
     axios
-      .post("/api/member/signup", { id, password, description })
+      .post("/api/member/signup", { id, email, password, description })
       .then((res) => {
         const message = res.data.message;
         toaster.create({
@@ -31,7 +33,6 @@ export function MemberSignup() {
           type: message.type,
           description: message.text,
         });
-        setDisabled(e.data.available);
       })
       .finally(() => {
         console.log("항상");
@@ -45,14 +46,28 @@ export function MemberSignup() {
           id: id,
         },
       })
-      .then((res) => {
-        const message = res.data.message;
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data);
+        const message = data.message;
         toaster.create({
           type: message.type,
           description: message.text,
         });
+
+        setIdCheck(data.available);
       });
   };
+
+  // 가입 버튼 비활성화 여부
+  let disabled = true;
+
+  if (idCheck) {
+    if (password === passwordCheck) {
+      disabled = false;
+    }
+  }
+
   return (
     <Box>
       <h3> 회원가입</h3>
@@ -64,10 +79,23 @@ export function MemberSignup() {
           </Button>
         </Group>
 
+        <Group attached w={"100%"}>
+          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Button onClick={handleIdCheckClick} variant={"outline"}>
+            중복확인
+          </Button>
+        </Group>
+
         <Field label={"비밀번호"}>
           <Input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </Field>
+        <Field label={"비밀번호 체크"}>
+          <Input
+            value={passwordCheck}
+            onChange={(e) => setPasswordCheck(e.target.value)}
           />
         </Field>
 
@@ -78,7 +106,7 @@ export function MemberSignup() {
           />
         </Field>
         <Box>
-          <Button disabled={!disabled} onClick={handleSaveClick}>
+          <Button disabled={disabled} onClick={handleSaveClick}>
             {" "}
             가입{" "}
           </Button>

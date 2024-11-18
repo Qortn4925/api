@@ -19,6 +19,7 @@ public class MemberController {
 
     @PostMapping("signup")
     public ResponseEntity<Map<String, Object>> signup(@RequestBody Member member) {
+        System.out.println("member = " + member);
         try {
             if (service.signUp(member)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "성공")));

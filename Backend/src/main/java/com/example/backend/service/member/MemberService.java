@@ -21,7 +21,7 @@ public class MemberService {
     }
 
     public boolean checkId(String id) {
-        return id != mapper.check(id);
+        return id == mapper.check(id);
     }
 
     public List<Member> list() {
