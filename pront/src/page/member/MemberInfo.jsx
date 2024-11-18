@@ -35,7 +35,6 @@ export function MemberInfo() {
       })
       .then((res) => {
         const message = res.data.message;
-
         toaster.create({
           type: message.type,
           description: message.text,
@@ -77,6 +76,7 @@ export function MemberInfo() {
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
         <Box>
+          <Button onClick={() => navigate(`/member/edit/${id}`)}> 수정 </Button>
           <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
             <DialogTrigger asChild>
               <Button colorPalette={"red"}>탈퇴</Button>

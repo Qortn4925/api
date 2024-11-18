@@ -8,6 +8,7 @@ import { BoardEdit } from "./page/board/BoardEdit.jsx";
 import { MemberSignup } from "./page/member/MemberSignup.jsx";
 import { MemberList } from "./page/member/MemberList.jsx";
 import { MemberInfo } from "./page/member/MemberInfo.jsx";
+import { MemberEdit } from "./page/member/MemberEdit.jsx";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
       },
       {
         path: "member/edit/:id",
-        element: <div></div>,
+        element: <MemberEdit />,
       },
     ],
   },

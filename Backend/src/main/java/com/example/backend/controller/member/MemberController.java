@@ -18,8 +18,6 @@ public class MemberController {
 
     @PostMapping("signup")
     public ResponseEntity<Map<String, Object>> signup(@RequestBody Member member) {
-
-
         try {
             if (service.signUp(member)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", "성공")));
@@ -29,7 +27,6 @@ public class MemberController {
         } catch (DuplicateKeyException e) {
             return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "이미 존재하는 아이디")));
         }
-
     }
 
     @GetMapping("checkid")
@@ -73,5 +70,11 @@ public class MemberController {
                                     "text", "정확한 정보를 입력해주세요.")));
         }
     }
+
+//    @PutMapping("update")
+//    public void edit(@RequestBody MemberEdit member) {
+//        System.out.println("member = " + member);
+//
+//    }
 
 }
