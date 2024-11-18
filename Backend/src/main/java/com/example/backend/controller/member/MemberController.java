@@ -73,8 +73,18 @@ public class MemberController {
     }
 
     @PutMapping("update")
-    public void edit(@RequestBody MemberEdit member) {
-            
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody MemberEdit member) {
+        if (service.update(member)) {
+            // 성공시
+            return ResponseEntity.ok(Map.of("message",
+                    Map.of("type", "success",
+                            "text", "비밀번호 변경 완료했습니다.")));
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            Map.of("type", "warning",
+                                    "text", "입력하신 비밀번호가 맞는지 확인해주세요.")));
+        }
 
     }
 

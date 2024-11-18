@@ -1,6 +1,7 @@
 package com.example.backend.service.member;
 
 import com.example.backend.dto.member.Member;
+import com.example.backend.dto.member.MemberEdit;
 import com.example.backend.mapper.member.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,19 @@ public class MemberService {
         if (db != null) {
             if (db.getPassword().equals(member.getPassword())) {
                 cnt = mapper.deleteById(member.getId());
+            }
+        }
+        return cnt == 1;
+
+    }
+
+    public boolean update(MemberEdit member) {
+        int cnt = 0;
+        Member db = mapper.selectById(member.getId());
+        if (db != null) {
+            // 기존 아이디의 password 와 ,   새로 받아온 정보의 비밀번호가 같을 시에만 수행
+            if (db.getPassword().equals(member.getOldPassword())) {
+                cnt = mapper.updateById(member);
             }
         }
         return cnt == 1;

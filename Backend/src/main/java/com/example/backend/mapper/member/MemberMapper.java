@@ -1,10 +1,8 @@
 package com.example.backend.mapper.member;
 
 import com.example.backend.dto.member.Member;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import com.example.backend.dto.member.MemberEdit;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -45,4 +43,11 @@ public interface MemberMapper {
             where id= #{id}
             """)
     int deleteById(String id);
+
+    @Update("""
+                        update member
+                        set password=#{password} , description=#{description}
+                        where id=#{id} 
+            """)
+    int updateById(MemberEdit member);
 }

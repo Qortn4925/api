@@ -14,6 +14,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { Button } from "../../components/ui/button.jsx";
+import { toaster } from "../../components/ui/toaster.jsx";
 
 export function MemberEdit() {
   const { id } = useParams();
@@ -39,9 +40,24 @@ export function MemberEdit() {
         oldPassword,
         description,
       })
-      .then()
-      .catch()
-      .finally();
+      .then((res) => {
+        console.log(res);
+        const message = res.data.message;
+
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .catch((e) => {
+        const message = e.data.message;
+
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .finally(setOpen(false));
   }
 
   if (member === null) {
