@@ -8,5 +8,11 @@ create table member
     inserted    datetime default now()
 );
 
+alter table member
+    add column email VARCHAR(30) unique after id;
+
 select *
 from member;
+
+
+drop table member;
