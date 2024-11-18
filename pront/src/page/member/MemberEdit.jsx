@@ -115,7 +115,7 @@ export function MemberEdit() {
         </Field>
         <Field label={"이메일"}>
           {" "}
-          <Group>
+          <Group attached w={"100%"}>
             <Input
               defaultValue={email}
               onChange={(e) => {
@@ -131,6 +131,7 @@ export function MemberEdit() {
               }}
             />
             <Button
+              variant={"outline"}
               disabled={emailCheckButtonDisabled}
               onClick={handleEmailCheckClick}
             >
