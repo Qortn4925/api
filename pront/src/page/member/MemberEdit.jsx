@@ -121,6 +121,7 @@ export function MemberEdit() {
               onChange={(e) => {
                 setEmail(e.target.value);
                 const emptyEmail = e.target.value.length === 0;
+                // member email 은 수정 전이니까 항상 같은 값을 받아와서 , 언제든 기존 값을 가져올 수 있음
                 const sameEmail = e.target.value === member.email;
                 if (emptyEmail || sameEmail) {
                   setEmailCheck(true);
