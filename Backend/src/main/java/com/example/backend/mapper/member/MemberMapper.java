@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface MemberMapper {
 
@@ -21,4 +23,11 @@ public interface MemberMapper {
                         where id=#{id}
             """)
     String check(String id);
+
+    @Select("""
+                        select id,inserted 
+            from member
+            
+            """)
+    List<Member> selectAll();
 }
