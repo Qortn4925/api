@@ -24,7 +24,7 @@ public interface MemberMapper {
     String check(String id);
 
     @Select("""
-                        select id,inserted 
+                        select id,email,inserted 
             from member
             
             """)
@@ -46,7 +46,7 @@ public interface MemberMapper {
 
     @Update("""
                         update member
-                        set password=#{password} , description=#{description}
+                        set password=#{password} , description=#{description} , email=#{email}
                         where id=#{id} 
             """)
     int updateById(MemberEdit member);

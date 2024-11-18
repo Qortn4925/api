@@ -18,7 +18,13 @@ export function MemberSignup() {
 
   function handleSaveClick() {
     axios
-      .post("/api/member/signup", { id, email, password, description })
+      .post("/api/member/signup", {
+        id,
+        //  email 입력 안할시  "" 으로 받아져 > 중복처리 되서   못 하는 문제 막기 위해 아니면 널
+        email: email.length === 0 ? null : email,
+        password,
+        description,
+      })
       .then((res) => {
         const message = res.data.message;
         toaster.create({

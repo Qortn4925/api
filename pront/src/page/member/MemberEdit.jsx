@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Box, Input, Spinner, Stack } from "@chakra-ui/react";
 import axios from "axios";
@@ -20,13 +20,16 @@ export function MemberEdit() {
   const { id } = useParams();
   const [member, setMember] = useState();
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [description, setDescription] = useState("");
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`/api/member/${id}`).then((res) => {
       setMember(res.data);
+      setEmail(res.data.email);
       setPassword(res.data.password);
       setDescription(res.data.description);
     });
@@ -36,6 +39,7 @@ export function MemberEdit() {
     axios
       .put("/api/member/update", {
         id: member.id,
+        email,
         password: password,
         oldPassword,
         description,
@@ -48,6 +52,7 @@ export function MemberEdit() {
           type: message.type,
           description: message.text,
         });
+        navigate(`/member/${id}`);
       })
       .catch((e) => {
         const message = e.data.message;
@@ -71,6 +76,13 @@ export function MemberEdit() {
         <Field readOnly label={"아이디"}>
           {" "}
           <Input defaultValue={id} />
+        </Field>
+        <Field label={"이메일"}>
+          {" "}
+          <Input
+            defaultValue={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </Field>
         <Field label={"비밀번호"}>
           {" "}
