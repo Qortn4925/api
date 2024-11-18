@@ -50,4 +50,12 @@ public interface MemberMapper {
                         where id=#{id} 
             """)
     int updateById(MemberEdit member);
+
+
+    @Select("""
+                select *
+                from member
+                where email=#{email}
+            """)
+    Member selectByEmail(String email);
 }

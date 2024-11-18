@@ -13,6 +13,7 @@ export function MemberSignup() {
   const [description, setDescription] = useState("");
   const [idCheck, setIdCheck] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [emailCheck, setEmailCheck] = useState(false);
   const navigate = useNavigate();
 
   function handleSaveClick() {
@@ -41,7 +42,7 @@ export function MemberSignup() {
 
   const handleIdCheckClick = () => {
     axios
-      .get("/api/member/checkid", {
+      .get("/api/member/check", {
         params: {
           id: id,
         },
@@ -59,10 +60,33 @@ export function MemberSignup() {
       });
   };
 
+  const handleEmailCheckClick = () => {
+    axios
+      .get("/api/member/check", {
+        params: {
+          email: email,
+        },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data);
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+        setEmailCheck(data.available);
+      });
+  };
+
   // 가입 버튼 비활성화 여부
   let disabled = true;
 
-  if (idCheck) {
+  // 이메인 중복 확인 버튼 활성화 여부
+
+  let emailCheckButtonDisabled = email.length === 0;
+
+  if (idCheck && emailCheck) {
     if (password === passwordCheck) {
       disabled = false;
     }
@@ -72,19 +96,39 @@ export function MemberSignup() {
     <Box>
       <h3> 회원가입</h3>
       <Stack gap={5}>
-        <Group attached w={"100%"}>
-          <Input value={id} onChange={(e) => setId(e.target.value)} />
-          <Button onClick={handleIdCheckClick} variant={"outline"}>
-            중복확인
-          </Button>
-        </Group>
+        <Field label={"아이디"}>
+          <Group attached w={"100%"}>
+            <Input value={id} onChange={(e) => setId(e.target.value)} />
 
-        <Group attached w={"100%"}>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
-          <Button onClick={handleIdCheckClick} variant={"outline"}>
-            중복확인
-          </Button>
-        </Group>
+            <Button onClick={handleIdCheckClick} variant={"outline"}>
+              중복확인
+            </Button>
+          </Group>
+        </Field>
+
+        <Field label={"이메일"}>
+          <Group attached w={"100%"}>
+            <Input
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (e.target.value.length > 0) {
+                  setEmailCheck(false);
+                } else {
+                  setEmailCheck(true);
+                }
+              }}
+            />
+
+            <Button
+              disabled={emailCheckButtonDisabled}
+              onClick={handleEmailCheckClick}
+              variant={"outline"}
+            >
+              중복확인
+            </Button>
+          </Group>
+        </Field>
 
         <Field label={"비밀번호"}>
           <Input
