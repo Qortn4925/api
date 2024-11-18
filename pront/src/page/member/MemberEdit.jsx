@@ -37,6 +37,7 @@ export function MemberEdit() {
         id: member.id,
         password: password,
         oldPassword,
+        description,
       })
       .then()
       .catch()

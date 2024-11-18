@@ -1,6 +1,7 @@
 package com.example.backend.controller.member;
 
 import com.example.backend.dto.member.Member;
+import com.example.backend.dto.member.MemberEdit;
 import com.example.backend.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -71,10 +72,10 @@ public class MemberController {
         }
     }
 
-//    @PutMapping("update")
-//    public void edit(@RequestBody MemberEdit member) {
-//        System.out.println("member = " + member);
-//
-//    }
+    @PutMapping("update")
+    public void edit(@RequestBody MemberEdit member) {
+            
+
+    }
 
 }
