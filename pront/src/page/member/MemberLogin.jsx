@@ -13,9 +13,7 @@ export function MemberLogin() {
   function handleLoginClick() {
     axios
       .post("/api/member/login", { id, password })
-      .then((res) => {
-        res.data;
-      })
+      .then((res) => res.data)
       .then((data) => {
         //토스트 띄우고
         toaster.create({
@@ -23,13 +21,16 @@ export function MemberLogin() {
           description: data.message.text,
         });
         // 이동
+        navigate("/");
         // local Storage에 token 저장
+        localStorage.setItem("token", data.token);
       })
       .catch((e) => {
-        // 실패 토스트
+        const message = e.response.data.message;
+        // 토스트 띄우고
         toaster.create({
-          type: e.response.data.message.type,
-          description: e.response.data.message.text,
+          type: message.type,
+          description: message.text,
         });
       })
       .finally();

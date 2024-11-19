@@ -19,7 +19,6 @@ public class MemberController {
 
     @PostMapping("login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Member member) {
-        System.out.println("member = " + member);
         // 토큰 만들기
         String token = service.token(member);
 

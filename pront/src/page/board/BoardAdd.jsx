@@ -9,7 +9,6 @@ import { toaster } from "../../components/ui/toaster.jsx";
 export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [writer, setWriter] = useState("");
   const [progress, setProgress] = useState(false);
 
   const navigate = useNavigate();
@@ -28,7 +27,6 @@ export function BoardAdd() {
         //   객체로 보낼 속성명과 ,  넘겨줄 변수명이 같으면 생략 가능
         title,
         content: content,
-        writer: writer,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -67,9 +65,7 @@ export function BoardAdd() {
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>
-        <Field label={"작성자"}>
-          <Input value={writer} onChange={(e) => setWriter(e.target.value)} />
-        </Field>
+
         <Box>
           <Button
             disabled={disabled}

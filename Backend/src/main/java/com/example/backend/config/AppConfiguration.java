@@ -34,6 +34,8 @@ public class AppConfiguration {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // csrf ?   cross site requset forgery , spring 토큰을 담고 있기 힘들어서 , 없어진 채로
+        // post 로 요청하면 > 토큰 여부 검사 함 
         http.csrf(c -> c.disable());
         http.oauth2ResourceServer(configure -> configure.jwt(Customizer.withDefaults()));
         return http.build();

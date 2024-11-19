@@ -10,6 +10,15 @@ export function Navbar() {
       <Box onClick={() => navigate("/member/signup")}> 회원 가입</Box>
       <Box onClick={() => navigate("/member/list")}>회원 목록</Box>
       <Box onClick={() => navigate("/member/login")}>로그인</Box>
+      <Box
+        onClick={() => {
+          localStorage.removeItem("token");
+          navigate("/member/login");
+        }}
+      >
+        {" "}
+        로그 아웃
+      </Box>
     </Flex>
   );
 }
