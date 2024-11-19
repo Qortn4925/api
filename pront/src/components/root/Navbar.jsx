@@ -13,16 +13,18 @@ export function Navbar() {
   return (
     <Flex gap={3}>
       <Box onClick={() => navigate("/")}> home</Box>
-      {isAuthenticated && <Box onClick={() => navigate("/add")}> 글 작성</Box>}
-      {isAuthenticated || (
+      {isAuthenticated() && (
+        <Box onClick={() => navigate("/add")}> 글 작성</Box>
+      )}
+      {isAuthenticated() || (
         <Box onClick={() => navigate("/member/signup")}> 회원 가입</Box>
       )}
       {isAdmin && <Box onClick={() => navigate("/member/list")}>회원 목록</Box>}
-      {isAuthenticated || (
+      {isAuthenticated() || (
         <Box onClick={() => navigate("/member/login")}>로그인</Box>
       )}
 
-      {isAuthenticated && (
+      {isAuthenticated() && (
         <Box
           onClick={() => {
             logout(); // 토큰 없어짐
