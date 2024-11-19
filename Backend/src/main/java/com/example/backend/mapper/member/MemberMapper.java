@@ -58,4 +58,11 @@ public interface MemberMapper {
                 where email=#{email}
             """)
     Member selectByEmail(String email);
+
+    @Select("""
+                    select auth
+                    from auth
+                    where member_id=#{id}
+            """)
+    List<String> selectAuthByMemberId(String id);
 }

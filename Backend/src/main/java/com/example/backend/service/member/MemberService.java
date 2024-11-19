@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -75,6 +76,11 @@ public class MemberService {
 
     public String token(Member member) {
         Member db = mapper.selectById(member.getId());
+        // auth 권한 별로 없어서 그냥 멤버에 합침
+        // 토큰 만들때 다 받아와서 , 주는거임 (권한이 여러개 ) 일 수도 있으니까
+        List<String> auths = mapper.selectAuthByMemberId(member.getId());
+        String authsString = auths.stream()
+                .collect(Collectors.joining(" "));
 
         if (db != null) {
             if (db.getPassword().equals(member.getPassword())) {
@@ -84,7 +90,7 @@ public class MemberService {
                         .subject(member.getId())
                         .issuedAt(Instant.now())
                         .expiresAt(Instant.now().plusSeconds(60 * 60 * 24 * 7))
-//                        .claim("scope","")
+                        .claim("scope", authsString)
                         .build();
                 return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
             }
@@ -95,5 +101,11 @@ public class MemberService {
     public boolean hasAccess(String id, Authentication authentication) {
 
         return id.equals(authentication.getName());
+    }
+
+    public boolean isAdmin(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(a -> a.toString())
+                .anyMatch(s -> s.equals("SCOPE_admin"));
     }
 }
