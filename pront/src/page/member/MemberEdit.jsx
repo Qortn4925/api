@@ -30,7 +30,10 @@ export function MemberEdit() {
   useEffect(() => {
     axios.get(`/api/member/${id}`).then((res) => {
       setMember(res.data);
-      setEmail(res.data.email);
+
+      if (res.data.email) {
+        setEmail(res.data.email);
+      }
       setPassword(res.data.password);
       setDescription(res.data.description);
     });

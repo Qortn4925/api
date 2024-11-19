@@ -93,7 +93,7 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Member> get(@PathVariable String id, Authentication authentication) {
         if (service.hasAccess(id, authentication)) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(service.get(id));
         } else {
             return ResponseEntity.status(403).build();
         }
@@ -124,18 +124,25 @@ public class MemberController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Map<String, Object>> edit(@RequestBody MemberEdit member) {
-        if (service.update(member)) {
-            // 성공시
-            return ResponseEntity.ok(Map.of("message",
-                    Map.of("type", "success",
-                            "text", "비밀번호 변경 완료했습니다.")));
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody MemberEdit member, Authentication authentication) {
+
+        if (service.hasAccess(member.getId(), authentication)) {
+            if (service.update(member)) {
+                // 성공시
+                return ResponseEntity.ok(Map.of("message",
+                        Map.of("type", "success",
+                                "text", "비밀번호 변경 완료했습니다.")));
+            } else {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("message",
+                                Map.of("type", "warning",
+                                        "text", "입력하신 비밀번호가 맞는지 확인해주세요.")));
+            }
         } else {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("message",
-                            Map.of("type", "warning",
-                                    "text", "입력하신 비밀번호가 맞는지 확인해주세요.")));
+            return ResponseEntity.status(403).build();
         }
+
 
     }
 
