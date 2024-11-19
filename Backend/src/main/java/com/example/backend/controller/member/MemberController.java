@@ -17,6 +17,19 @@ import java.util.Map;
 public class MemberController {
     final MemberService service;
 
+    @PostMapping("login")
+    public void login(@RequestBody Member member) {
+        System.out.println("member = " + member);
+        // 토큰 만들기
+        String token = service.token(member);
+
+        if (token != null) {
+
+        } else {
+
+        }
+    }
+
     @PostMapping("signup")
     public ResponseEntity<Map<String, Object>> signup(@RequestBody Member member) {
         System.out.println("member = " + member);
