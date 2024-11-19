@@ -76,23 +76,31 @@ public class BoardController {
     }
 
     @PutMapping("update")
-    public ResponseEntity<Map<String, Object>> update(@RequestBody Board board) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, Object>> update(@RequestBody Board board, Authentication authentication) {
 
-        if (service.validate(board)) {
-            if (service.update(board)) {
-                //  ok() > 상태가  200번 대면 >  응답개체본문빌더 객체를 만들어줌 ,  > body  응답 본문에  붙여서 나가는거
+        if (service.hasAccess(board.getId(), authentication)) {
+            if (service.validate(board)) {
+                if (service.update(board)) {
+                    //  ok() > 상태가  200번 대면 >  응답개체본문빌더 객체를 만들어줌 ,  > body  응답 본문에  붙여서 나가는거
 
-                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
-                        "text", board.getId() + "번 게시판 수정이 완료되었습니다."
-                )));
+                    return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
+                            "text", board.getId() + "번 게시판 수정이 완료되었습니다."
+                    )));
+                } else {
+                    return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error",
+                            "text", board.getId() + "번 게시판 수정 실패!"
+                    )));
+                }
             } else {
-                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error",
-                        "text", board.getId() + "번 게시판 수정 실패!"
-                )));
+                return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning", "text", "제목이나 본문이 비어있을수 없습니다.")));
             }
+
         } else {
-            return ResponseEntity.badRequest().body(Map.of("message", Map.of("type", "warning", "text", "제목이나 본문이 비어있을수 없습니다.")));
+            return ResponseEntity.status(403).body(Map.of("message", Map.of("type", "error", "text", "수정 권한이 없습니다.")));
+
         }
+
 
     }
 }

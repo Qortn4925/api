@@ -39,8 +39,7 @@ public class BoardService {
 
         boolean title = board.getTitle().trim().length() > 0;
         boolean content = board.getContent().trim().length() > 0;
-
-
+        
         return title && content;
     }
 
@@ -56,7 +55,7 @@ public class BoardService {
 
     public boolean hasAccess(int id, Authentication authentication) {
         Board board = mapper.selectById(id);
-        
+
         return board.getWriter().equals(authentication.getName());
     }
 
