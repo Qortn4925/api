@@ -11,6 +11,7 @@ import { MemberInfo } from "./page/member/MemberInfo.jsx";
 import { MemberEdit } from "./page/member/MemberEdit.jsx";
 import { MemberLogin } from "./page/member/MemberLogin.jsx";
 import axios from "axios";
+import AuthenticationProvider from "./components/context/AuthenticationProvider.jsx";
 
 // axios 인터셉터 설정
 axios.interceptors.request.use(function (config) {
@@ -71,7 +72,11 @@ const router = createBrowserRouter([
 function App() {
   const [count, setCount] = useState(0);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AuthenticationProvider>
+      <RouterProvider router={router} />
+    </AuthenticationProvider>
+  );
 }
 
 export default App;

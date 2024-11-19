@@ -1,14 +1,16 @@
 import { Box, Button, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 
 export function MemberLogin() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const authentication = useContext(AuthenticationContext);
 
   function handleLoginClick() {
     axios
@@ -23,7 +25,7 @@ export function MemberLogin() {
         // 이동
         navigate("/");
         // local Storage에 token 저장
-        localStorage.setItem("token", data.token);
+        authentication.login(data.token);
       })
       .catch((e) => {
         const message = e.response.data.message;
