@@ -59,11 +59,18 @@ public class BoardController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
-        if (service.remove(id)) {
-            return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", id + "번 게시글이 삭제 되었습니다")));
+    @PreAuthorize("isAuthenticated()")  // 로그인 여부(토큰)
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable int id, Authentication authentication) {
+
+        if (service.hasAccess(id, authentication)) {
+            if (service.remove(id)) {
+                return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success", "text", id + "번 게시글이 삭제 되었습니다")));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "게시글 삭제 중 문제가 발생하였습니다.")));
+            }
         } else {
-            return ResponseEntity.internalServerError().body(Map.of("message", Map.of("type", "error", "text", "게시글 삭제 중 문제가 발생하였습니다.")));
+            return ResponseEntity.status(403).body(Map.of("message", Map.of("type", "error", "text", "삭제 권한이 없습니다.")));
+
         }
 
     }
