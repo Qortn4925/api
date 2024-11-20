@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 @Service
@@ -16,9 +19,33 @@ public class BoardService {
 
     final BoardMapper mapper;
 
-    public boolean add(Board board, Authentication authentication) {
+    public boolean add(Board board, MultipartFile[] files, Authentication authentication) {
         board.setWriter(authentication.getName());
         int cnt = mapper.insert(board);
+
+
+        // 아직 id가 없어서 받아 올수 없어서   후에 실행해야함 (게시판 생성 전이니까)
+        if (files != null && files.length > 0) {
+            // 폴더 만들기
+            String directory = STR."C:/Temp/prj1114/\{board.getId()}";
+            File dir = new File(directory);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            // TODO: local > aws ,
+            for (MultipartFile file : files) {
+//                 아직 디렉토리가  업성서 , 폴더 미리 만들어야함
+                String filePath = STR."C:/Temp/prj1114/\{board.getId()}/\{file.getOriginalFilename()}";
+                try {
+                    file.transferTo(new File(filePath));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        }
+
 
         return cnt == 1;
 //        return false;
@@ -39,7 +66,7 @@ public class BoardService {
 
         boolean title = board.getTitle().trim().length() > 0;
         boolean content = board.getContent().trim().length() > 0;
-        
+
         return title && content;
     }
 

@@ -10,9 +10,10 @@ export function BoardAdd() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [progress, setProgress] = useState(false);
-
+  const [files, setFiles] = useState([]);
   const navigate = useNavigate();
 
+  console.log(files);
   // 글 작성 에서 >  저장 버튼 클릭시
   // spring에서  api/board/add에서 > 보드를 추가하고
   // 리턴 받는 코드였는데
@@ -22,11 +23,14 @@ export function BoardAdd() {
   const handleSaveClick = () => {
     setProgress(true);
 
+    //  json 은 텍스트 형식이라 ,  파일 보내고 받기 적합 x
+    //   post.form 사용해야함 > 그래서 백엔드에서 받는 방식도 바뀌어야함
     axios
-      .post("/api/board/add", {
+      .postForm("/api/board/add", {
         //   객체로 보낼 속성명과 ,  넘겨줄 변수명이 같으면 생략 가능
         title,
         content: content,
+        files: files,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -52,6 +56,15 @@ export function BoardAdd() {
   };
   //  빈 제목이나 본문을 작성할 수 없게
   const disabled = !(title.trim().length > 0 && content.trim().length > 0);
+  // files  의 파일명을  component 리스트로 만들기
+  const filesList = [];
+  for (const file of files) {
+    filesList.push(
+      <li>
+        {file.name} ({Math.floor(file.size / 1024)} kb)
+      </li>,
+    );
+  }
   return (
     <Box>
       <h3> 안녕</h3>
@@ -65,6 +78,15 @@ export function BoardAdd() {
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>
+        <Box>
+          <input
+            type={"file"}
+            accept={"image/*"}
+            multiple
+            onChange={(e) => setFiles(e.target.files)}
+          />
+        </Box>
+        <Box>{filesList}</Box>
 
         <Box>
           <Button
