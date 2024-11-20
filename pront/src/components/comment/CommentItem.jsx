@@ -96,7 +96,10 @@ export function CommentItem({ comment, onDeleteClick, onEditClick }) {
           <h3>작성자: {comment.memberId}</h3>
           <h4>작성시간: {comment.inserted}</h4>
         </Flex>
-        <p> 내용:{comment.comment}</p>
+        {/* 댓글 줄 바꿈 하는 경우가 많은데 , 
+         html은 공백을 안 먹어서 ,  pre 태그 사용 하거나 ,  
+         chakra 에서도 사용하고 싶으면 ,  css 속성으로 whiteSpace:pre 로*/}
+        <p style={{ whiteSpace: "pre" }}> 내용:{comment.comment}</p>
       </Box>
 
       {hasAccess && (
