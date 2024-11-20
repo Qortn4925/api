@@ -89,6 +89,7 @@ EditButton.propTypes = { colorPalette: PropTypes.string };
 
 export function CommentItem({ comment, onDeleteClick, onEditClick }) {
   const { hasAccess } = useContext(AuthenticationContext);
+  console.log(hasAccess());
   return (
     <HStack border={"1px solid black"} m={5}>
       <Box w={"80%"}>
@@ -102,7 +103,7 @@ export function CommentItem({ comment, onDeleteClick, onEditClick }) {
         <p style={{ whiteSpace: "pre" }}> 내용:{comment.comment}</p>
       </Box>
 
-      {hasAccess && (
+      {!hasAccess() && (
         <Box w={"20%"}>
           <EditButton comment={comment} onEditClick={onEditClick} />
           <DeleteButton

@@ -12,3 +12,25 @@ create table comment
 
 select *
 from comment;
+
+
+select count(*)
+from comment
+group by board_id;
+
+select id,
+       title,
+       writer,
+       inserted,
+       (select count(*)
+        from comment c
+        where board_id = b.id)
+from board b
+order by id desc;
+
+
+select b.id, b.title, b.writer, b.inserted, count(c.id)
+from comment c
+         right join board b on b.id = c.board_id
+group by b.id
+order by b.id desc;

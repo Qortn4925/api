@@ -12,5 +12,6 @@ public class Board {
     private String content;
     private String writer;
     private LocalDateTime inserted;
+    private Integer countComment;
 
 }
