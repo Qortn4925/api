@@ -3,6 +3,7 @@ import { CommentInput } from "./CommentInput.jsx";
 import { CommentList } from "./CommentList.jsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { toaster } from "../ui/toaster.jsx";
 
 export function CommentContainer({ boardId }) {
   const [commentList, setCommentList] = useState([]);
@@ -25,8 +26,37 @@ export function CommentContainer({ boardId }) {
           boardId: boardId,
           comment: comment,
         })
+        .then((res) => {
+          res.data.message;
+        })
+        .then((message) => {
+          toaster.create({
+            type: type,
+            description: text,
+          });
+        })
         .finally(() => setProcess(false));
     }
+  }
+
+  function handleEditClick(id, comment) {
+    setProcess(true);
+    axios
+      .put("/api/comment/edit", {
+        id,
+        comment,
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        const message = data.message;
+        toaster.create({
+          type: message.type,
+          description: message.text,
+        });
+      })
+      .finally(() => {
+        setProcess(false);
+      });
   }
 
   // id 는 > 밑에서 사용할거니까 , 함수 원형으로 계속 넘기다가 , 사용할 곳에서  comment,id 받아서 사용
@@ -44,6 +74,7 @@ export function CommentContainer({ boardId }) {
           boardId={boardId}
           commentList={commentList}
           onDeleteClick={handleDeleteClick}
+          onEditClick={handleEditClick}
         />
       </Stack>
     </Box>

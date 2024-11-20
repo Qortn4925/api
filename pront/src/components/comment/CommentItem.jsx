@@ -1,7 +1,94 @@
-import { Box, Flex, HStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, Textarea } from "@chakra-ui/react";
 import { Button } from "../ui/button.jsx";
+import React, { useContext, useState } from "react";
+import { AuthenticationContext } from "../context/AuthenticationProvider.jsx";
+import {
+  DialogActionTrigger,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog.jsx";
+import * as PropTypes from "prop-types";
 
-export function CommentItem({ comment, onDeleteClick }) {
+function DeleteButton({ onClick }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+      <DialogTrigger asChild>
+        <Button colorPalette={"red"} variant={"outline"}>
+          삭제
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>삭제 확인</DialogTitle>
+        </DialogHeader>
+        <DialogBody>
+          <p>댓글을 삭제 하시겠습니까?</p>
+        </DialogBody>
+        <DialogFooter>
+          <DialogActionTrigger>
+            <Button variant={"outline"}>취소</Button>
+          </DialogActionTrigger>
+          <Button colorPalette={"blue"} onClick={onClick}>
+            삭제
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
+  );
+}
+
+function EditButton({ comment, onEditClick }) {
+  const [open, setOpen] = useState();
+  const [newComment, setNewComment] = useState(comment.comment);
+
+  //수정 요청을 보내면 ,  controller 에서 , 수정을하고 , 다시 받아와야 하는데,
+  //  rerender 된 값을 보여줘야 한단 말이지 ,
+
+  return (
+    <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
+      <DialogTrigger asChild>
+        <Button variant={"outline"}>수정</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>수정 확인</DialogTitle>
+        </DialogHeader>
+        <DialogBody>
+          <Textarea
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+        </DialogBody>
+        <DialogFooter>
+          <DialogActionTrigger>
+            <Button variant={"outline"}>취소</Button>
+          </DialogActionTrigger>
+          <Button
+            colorPalette={"blue"}
+            onClick={() => {
+              setOpen(false);
+              onEditClick(comment.id, newComment);
+            }}
+          >
+            수정
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </DialogRoot>
+  );
+}
+
+EditButton.propTypes = { colorPalette: PropTypes.string };
+
+export function CommentItem({ comment, onDeleteClick, onEditClick }) {
+  const { hasAccess } = useContext(AuthenticationContext);
   return (
     <HStack border={"1px solid black"} m={5}>
       <Box w={"80%"}>
@@ -11,19 +98,17 @@ export function CommentItem({ comment, onDeleteClick }) {
         </Flex>
         <p> 내용:{comment.comment}</p>
       </Box>
-      <Box w={"20%"}>
-        <Button colorPalette={"purple"}> 수정</Button>
-        <Button
-          colorPalette={"red"}
-          onClick={() => {
-            const id = comment.id;
-            onDeleteClick(id);
-          }}
-        >
-          {" "}
-          삭제
-        </Button>
-      </Box>
+
+      {hasAccess && (
+        <Box w={"20%"}>
+          <EditButton comment={comment} onEditClick={onEditClick} />
+          <DeleteButton
+            onClick={() => {
+              onDeleteClick(comment.id);
+            }}
+          />
+        </Box>
+      )}
     </HStack>
   );
 }

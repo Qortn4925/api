@@ -1,10 +1,7 @@
 package com.example.backend.mapper.comment;
 
 import com.example.backend.dto.comment.Comment;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -40,4 +37,10 @@ public interface CommentMapper {
                 where id=#{id}
             """)
     int deleteById(int id);
+
+    @Update("""
+                        update comment set comment=#{comment}
+            where id=#{id}
+            """)
+    int update(Comment comment);
 }
