@@ -43,6 +43,8 @@ public class CommentController {
         }
     }
 
+
+    //    TODO: 삭제 토스트  작성하기
     @DeleteMapping("remove/{id}")
     @PreAuthorize("isAuthenticated()")
     public void remove(@PathVariable int id, Authentication auth) {
