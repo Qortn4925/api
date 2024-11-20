@@ -24,6 +24,7 @@ export function MemberInfo() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { hasAccess } = useContext(AuthenticationContext);
+
   useEffect(() => {
     // 회원정보 얻기
     axios.get(`/api/member/${id}`).then((res) => setMember(res.data));

@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { CommentContainer } from "../../components/comment/CommentContainer.jsx";
 
 export function BoardView() {
   // 쿼리스트링에 붙은  id를 가져오는거  , 백엔드에서는  리퀘파람에붙은
@@ -104,6 +105,10 @@ export function BoardView() {
           </Box>
         )}
       </Stack>
+
+      <hr />
+
+      <CommentContainer boardId={board.id} />
     </Box>
   );
 }
