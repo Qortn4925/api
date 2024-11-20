@@ -29,12 +29,22 @@ export function CommentContainer({ boardId }) {
     }
   }
 
+  // id 는 > 밑에서 사용할거니까 , 함수 원형으로 계속 넘기다가 , 사용할 곳에서  comment,id 받아서 사용
+  function handleDeleteClick(id) {
+    setProcess(true);
+    axios.delete(`/api/comment/remove/${id}`).finally(() => setProcess(false));
+  }
+
   return (
     <Box>
       <Stack gap={5}>
         <h3> 댓글</h3>
         <CommentInput boardId={boardId} onSaveClick={handleSaveClick} />
-        <CommentList boardId={boardId} commentList={commentList} />
+        <CommentList
+          boardId={boardId}
+          commentList={commentList}
+          onDeleteClick={handleDeleteClick}
+        />
       </Stack>
     </Box>
   );

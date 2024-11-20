@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class Comment {
+    private Integer id;
     private String comment;
     private String memberId;  //authentication
     private String boardId;  // 화면 ?

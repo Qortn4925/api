@@ -10,7 +10,6 @@ export function Navbar() {
     AuthenticationContext,
   );
   //  && or 는 true 만나면 바로 true 리턴 ,      ||and 는  falsy 를 만나자 마자 그걸 리턴하고 , 둘다 트루면 마지막
-  console.log(isAuthenticated);
   return (
     <Flex gap={3}>
       <Box onClick={() => navigate("/")}> home</Box>

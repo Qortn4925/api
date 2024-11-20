@@ -25,4 +25,13 @@ public class CommentService {
     public List<Comment> list(Integer boardId) {
         return mapper.selectByBoardId(boardId);
     }
+
+    public boolean hasAccess(int id, Authentication auth) {
+        Comment comment = mapper.selectByID(id);
+        return comment.getMemberId().equals(auth.getName());
+    }
+
+    public void remove(int id) {
+        mapper.deleteById(id);
+    }
 }
