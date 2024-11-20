@@ -33,10 +33,7 @@ export function Navbar() {
           로그아웃
         </Box>
       )}
-      <Box variant={"outline"} bg={"black.300"}>
-        {" "}
-        {id}
-      </Box>
+      <Box onClick={() => navigate(`/member/${id}`)}>{id}</Box>
     </Flex>
   );
 }
