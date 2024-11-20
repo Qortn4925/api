@@ -26,11 +26,7 @@ function AuthenticationProvider({ children }) {
     setUserToken({});
   }
 
-  const isAuthenticated = () => {
-    console.log(Date.now() < userToken.exp * 1000);
-    // 작으면 true, 아니면 falsy 인데
-    return Date.now() < userToken.exp * 1000;
-  };
+  const isAuthenticated = Date.now() < userToken.exp * 1000;
 
   let isAdmin = false;
 
