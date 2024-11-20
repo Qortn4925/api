@@ -22,19 +22,24 @@ public class CommentController {
 
     @PutMapping("edit")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> edit(@RequestBody Comment comment) {
-        System.out.println("comment = " + comment);
-        System.out.println(comment);
-        if (service.update(comment)) {
-            return ResponseEntity.ok().body(Map.of
-                    ("message",
-                            Map.of("type", "success",
-                                    "text", "댓글이 수정 되었습니다.")));
+    public ResponseEntity<Map<String, Object>> edit(@RequestBody Comment comment, Authentication authentication) {
+        if (service.hasAccess(comment.getId(), authentication)) {
+            if (service.update(comment)) {
+                return ResponseEntity.ok().body(Map.of
+                        ("message",
+                                Map.of("type", "success",
+                                        "text", "댓글이 수정 되었습니다.")));
+            } else {
+                return ResponseEntity.internalServerError().body(Map.of
+                        ("message",
+                                Map.of("type", "success",
+                                        "text", "댓글 수정 xx")));
+            }
         } else {
-            return ResponseEntity.ok().body(Map.of
+            return ResponseEntity.status(403).body(Map.of
                     ("message",
                             Map.of("type", "success",
-                                    "text", "댓글 수정 xx")));
+                                    "text", "접근 권한 x")));
         }
     }
 
