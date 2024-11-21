@@ -18,6 +18,11 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -30,6 +35,13 @@ public class AppConfiguration {
     RSAPublicKey pub;
     @Value("classpath:secret/app.key")
     RSAPrivateKey priv;
+
+    // z커밋 할때 aws key 들어가는거 막으려고
+    @Value("${aws.access.key}")
+    String accessKey;
+
+    @Value("${aws.secret.key}")
+    String secretKey;
 
 
     @Bean
@@ -53,6 +65,19 @@ public class AppConfiguration {
 
 
         return new NimbusJwtEncoder(jwks);
+    }
+
+    @Bean
+    S3Client s3Client() {
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
+
+        AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
+
+        S3Client s3 = S3Client.builder()
+                .region(Region.AP_NORTHEAST_2)
+                .credentialsProvider(credentialsProvider)
+                .build();
+        return s3;
     }
 
 

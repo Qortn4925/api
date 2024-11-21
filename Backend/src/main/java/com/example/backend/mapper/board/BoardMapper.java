@@ -20,8 +20,11 @@ public interface BoardMapper {
 
     @Select("""
             <script>
-                SELECT b.id, b.title, b.writer, b.inserted ,count(c.id) as countComment
-                FROM board b left join comment c on b.id=c.board_id
+                SELECT b.id, b.title, b.writer, b.inserted ,count(distinct  c.id) as countComment ,count(DISTINCT f.name) as countFile
+                FROM 
+                    board b left join comment c on b.id=c.board_id
+                    left join board_file f 
+                        on b.id=f.board_id
                 WHERE 
                     <trim prefixOverrides="OR">
                         <if test="searchType == 'all' or searchType == 'title'">

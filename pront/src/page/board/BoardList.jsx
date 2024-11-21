@@ -8,7 +8,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "../../components/ui/pagination.jsx";
-import { FaCommentDots } from "react-icons/fa6";
+import { FaCommentDots, FaImages } from "react-icons/fa6";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -122,6 +122,11 @@ export function BoardList() {
                   {board.countComment > 0 && (
                     <Badge variant={"solid"} colorPalette={"green"}>
                       <FaCommentDots />:{board.countComment}
+                    </Badge>
+                  )}
+                  {board.countFile > 0 && (
+                    <Badge varian={"solid"} colorPalette={"blue"}>
+                      <FaImages />:{board.countFile}
                     </Badge>
                   )}
                 </Table.Cell>
