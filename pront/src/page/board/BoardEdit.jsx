@@ -1,5 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Image, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  Image,
+  Input,
+  Spinner,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -16,6 +24,26 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { Switch } from "../../components/ui/switch.jsx";
+
+function ImageView({ files, onRemoveSwitchClick }) {
+  return (
+    <Box>
+      {files.map((file) => (
+        <HStack key={file.name}>
+          <Switch
+            variant={"solid"}
+            onCheckedChange={(e) => {
+              console.log(e.checked);
+              onRemoveSwitchClick(e.checked, file.name);
+            }}
+          />
+          <Image src={file.src} border={"1px solid black"} m={3} />
+        </HStack>
+      ))}
+    </Box>
+  );
+}
 
 export function BoardEdit() {
   const { id } = useParams();
@@ -24,10 +52,20 @@ export function BoardEdit() {
   const [progress, setProgress] = useState(false);
   const [open, setOpen] = useState(false);
   const { hasAccess } = useContext(AuthenticationContext);
+  const [removeFiles, setRemoveFiles] = useState([]);
 
   useEffect(() => {
     axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
   }, []);
+
+  const handleRemoveSwitchClick = (checked, fileName) => {
+    console.log("버튼 클릭 확인");
+    if (checked) {
+      setRemoveFiles([...removeFiles, fileName]);
+    } else {
+      setRemoveFiles(removeFiles.filter((f) => f !== fileName));
+    }
+  };
 
   const handleSave = () => {
     setProgress(true);
@@ -49,21 +87,6 @@ export function BoardEdit() {
     board.title.trim().length > 0 && board.content.trim().length > 0
   );
 
-  function ImageFileView({ files }) {
-    return (
-      <Box>
-        {files.map((file) => (
-          <Image
-            key={file.name}
-            src={file.src}
-            border={"1px solid black"}
-            m={3}
-          />
-        ))}
-      </Box>
-    );
-  }
-
   return (
     <Box>
       <h3>{id}번 게시물 수정 화면</h3>
@@ -79,8 +102,11 @@ export function BoardEdit() {
             value={board.content}
             onChange={(e) => setBoard({ ...board, content: e.target.value })}
           />
-          <ImageFileView files={board.fileSrc} />
         </Field>
+        <ImageView
+          files={board.fileSrc}
+          onRemoveSwitchClick={handleRemoveSwitchClick}
+        />
         {hasAccess(board.writer) && (
           <Box>
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>
