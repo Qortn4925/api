@@ -27,17 +27,16 @@ import { CommentContainer } from "../../components/comment/CommentContainer.jsx"
 
 function ImageFileView({ files }) {
   return (
-    <>
+    <Box>
       {files.map((file) => (
         <Image
-          key={files}
-          src={file}
-          w={"100%"}
+          key={file.name}
+          src={file.src}
           border={"1px solid black"}
           m={3}
         />
       ))}
-    </>
+    </Box>
   );
 }
 
@@ -48,6 +47,7 @@ export function BoardView() {
   // axios.get("/api/board/)  여기서 하는게 아니라 , 같이 넘겨줘야 되는거 아닌가 ?
   const { id } = useParams();
   const [board, setBoard] = useState(null);
+  // const [files, setFiles] = useState([]);
   const navigate = useNavigate();
   const { hasAccess } = useContext(AuthenticationContext);
   useEffect(() => {
@@ -78,6 +78,7 @@ export function BoardView() {
         });
       });
   };
+
   return (
     <Box>
       <h3> {board.id} 게시글 </h3>

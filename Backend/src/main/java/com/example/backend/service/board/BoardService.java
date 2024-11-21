@@ -1,8 +1,10 @@
 package com.example.backend.service.board;
 
 import com.example.backend.dto.board.Board;
+import com.example.backend.dto.board.BoardFile;
 import com.example.backend.mapper.board.BoardMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -18,6 +21,8 @@ import java.util.Map;
 public class BoardService {
 
     final BoardMapper mapper;
+    @Value("${image.src.prefix}")
+    String imageSrcPrefix;
 
     public boolean add(Board board, MultipartFile[] files, Authentication authentication) {
         board.setWriter(authentication.getName());
@@ -64,7 +69,13 @@ public class BoardService {
         // file 추가하면서 바뀜
 
         Board board = mapper.selectById(id);
-        board.setFileSrc(mapper.selectFilesByBoardId(id));
+        List<String> fileNameList = mapper.selectFilesByBoardId(id);
+        // 서버 주소 추가하기
+        //  http://172.30.1.73:8081/id/+ file name
+        List<BoardFile> fileSrcList = fileNameList.stream()
+                .map(name -> new BoardFile(name, STR."\{imageSrcPrefix}/\{id}/\{name}"))
+                .toList();
+        board.setFileSrc(fileSrcList);
         return board;
     }
 

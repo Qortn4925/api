@@ -31,7 +31,6 @@ public class BoardController {
 
         if (service.validate(board)) {
 
-
             if (service.add(board, files, authentication)) {
                 return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
                                 "text", board.getId() + "번 게시물이 등록되었습니다"),
