@@ -15,3 +15,13 @@ desc board_file;
 
 select *
 from board_file;
+
+
+# 게시물 목록 조회 ( 파일수 와 댓글)
+
+select b.id, b.title, count(distinct c.id) 댓글수, count(distinct f.name) 파일수
+from board b
+         left join comment c on b.id = c.board_id
+         left join board_file f on b.id = f.board_id
+group by b.id
+order by b.id desc;
