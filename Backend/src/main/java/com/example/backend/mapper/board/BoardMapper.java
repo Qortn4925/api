@@ -90,4 +90,17 @@ public interface BoardMapper {
                     where board_id=#{id}
             """)
     List<String> selectFilesByBoardId(int id);
+
+    @Delete("""
+                    delete from board_file
+                    where board_id=#{id}
+            """)
+    int deleteFileByBoardId(int id);
+
+    @Select("""
+                    select id
+                    from board
+                    where writer=#{id}
+            """)
+    List<Integer> selectByWriter(String id);
 }

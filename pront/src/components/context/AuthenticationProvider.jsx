@@ -27,6 +27,7 @@ function AuthenticationProvider({ children }) {
   }
 
   function hasAccess(id) {
+    // 토큰과 ,유저 아이디가 같은지 확인,
     return id === userToken.sub;
   }
 

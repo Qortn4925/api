@@ -92,7 +92,7 @@ public class MemberController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("isAuthenticated() and hasAuthority('SCOPE_admin')")
+    @PreAuthorize("isAuthenticated() or hasAuthority('SCOPE_admin')")
     public ResponseEntity<Member> get(@PathVariable String id, Authentication authentication) {
 
         if (service.hasAccess(id, authentication) || service.isAdmin(authentication)) {
@@ -105,7 +105,7 @@ public class MemberController {
     @DeleteMapping("remove")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, Object>> remove(@RequestBody Member member, Authentication authentication) {
-
+        System.out.println("member = " + member);
         if (service.hasAccess(member.getId(), authentication)) {
             if (service.remove(member)) {
                 //잘됨
@@ -119,7 +119,7 @@ public class MemberController {
                                         "text", "정확한 정보를 입력해주세요.")));
             }
 
-        } else {
+        } else {  //? 삭제 누르면 이걸로 날라가는데
             return ResponseEntity.status(403).build();
         }
 

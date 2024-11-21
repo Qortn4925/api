@@ -23,8 +23,9 @@ export function MemberInfo() {
   const [open, setOpen] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const { hasAccess } = useContext(AuthenticationContext);
+  const { hasAccess, logout } = useContext(AuthenticationContext);
 
+  console.log(hasAccess);
   useEffect(() => {
     // 회원정보 얻기
     axios.get(`/api/member/${id}`).then((res) => setMember(res.data));
@@ -36,6 +37,7 @@ export function MemberInfo() {
         data: { id, password },
       })
       .then((res) => {
+        logout();
         const message = res.data.message;
         toaster.create({
           type: message.type,
@@ -80,7 +82,7 @@ export function MemberInfo() {
         <Field label={"가입일시"}>
           <Input type={"datetime-local"} readOnly value={member.inserted} />
         </Field>
-        {hasAccess(id) && (
+        {hasAccess && (
           <Box>
             <Button onClick={() => navigate(`/member/edit/${id}`)}>
               {" "}
