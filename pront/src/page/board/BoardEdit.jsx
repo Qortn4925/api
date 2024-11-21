@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Image, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -49,6 +49,21 @@ export function BoardEdit() {
     board.title.trim().length > 0 && board.content.trim().length > 0
   );
 
+  function ImageFileView({ files }) {
+    return (
+      <Box>
+        {files.map((file) => (
+          <Image
+            key={file.name}
+            src={file.src}
+            border={"1px solid black"}
+            m={3}
+          />
+        ))}
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <h3>{id}번 게시물 수정 화면</h3>
@@ -64,6 +79,7 @@ export function BoardEdit() {
             value={board.content}
             onChange={(e) => setBoard({ ...board, content: e.target.value })}
           />
+          <ImageFileView files={board.fileSrc} />
         </Field>
         {hasAccess(board.writer) && (
           <Box>
