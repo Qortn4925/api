@@ -40,6 +40,7 @@ public class BoardService {
                 try {
                     file.transferTo(new File(filePath));
                 } catch (IOException e) {
+
                     throw new RuntimeException(e);
                 }
                 // id 와  , 파일 이름
@@ -60,8 +61,11 @@ public class BoardService {
     }
 
     public Board get(int id) {
+        // file 추가하면서 바뀜
 
-        return mapper.selectById(id);
+        Board board = mapper.selectById(id);
+        board.setFileSrc(mapper.selectFilesByBoardId(id));
+        return board;
     }
 
     public boolean validate(Board board) {

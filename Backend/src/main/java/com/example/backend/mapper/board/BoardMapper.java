@@ -79,4 +79,12 @@ public interface BoardMapper {
                 values (#{id},#{fileName})
             """)
     int insertFile(int id, String fileName);
+
+
+    @Select("""
+                    select name
+                    from board_file
+                    where board_id=#{id}
+            """)
+    List<String> selectFilesByBoardId(int id);
 }

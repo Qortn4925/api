@@ -1,5 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Button, Input, Spinner, Stack, Textarea } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Image,
+  Input,
+  Spinner,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Field } from "../../components/ui/field.jsx";
@@ -16,6 +24,22 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { CommentContainer } from "../../components/comment/CommentContainer.jsx";
+
+function ImageFileView({ files }) {
+  return (
+    <>
+      {files.map((file) => (
+        <Image
+          key={files}
+          src={file}
+          w={"100%"}
+          border={"1px solid black"}
+          m={3}
+        />
+      ))}
+    </>
+  );
+}
 
 export function BoardView() {
   // 쿼리스트링에 붙은  id를 가져오는거  , 백엔드에서는  리퀘파람에붙은
@@ -64,6 +88,7 @@ export function BoardView() {
         <Field label={"본문"}>
           <Textarea value={board.content} />
         </Field>
+        <ImageFileView files={board.fileSrc} />
         <Field label={"작성자"}>
           <Input value={board.writer} />
         </Field>
