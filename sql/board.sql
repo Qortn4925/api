@@ -5,7 +5,7 @@ create table board
     id       int auto_increment primary key,
     title    varchar(300) not null,
     content  varchar(5000),
-    writer   varchar(100) not null,
+    writer   varchar(20)  not null references member (id),
     inserted Datetime default now()
 );
 
@@ -18,3 +18,6 @@ Insert into board
     (title, content, writer)
 select title, content, writer
 from board;
+
+desc board;
+
