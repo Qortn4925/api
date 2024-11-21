@@ -73,4 +73,10 @@ public interface BoardMapper {
             </script>
             """)
     Integer countAll(String searchType, String keyword);
+
+    @Insert("""
+                Insert into board_file
+                values (#{id},#{fileName})
+            """)
+    int insertFile(int id, String fileName);
 }
