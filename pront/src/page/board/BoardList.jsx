@@ -2,6 +2,7 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   Heading,
   HStack,
   Input,
@@ -108,7 +109,7 @@ export function BoardList() {
     <Box>
       <Heading size={{ base: "xl", md: "2xl" }}> 게시물 목록 </Heading>
       {boardList.length > 0 ? (
-        <Table.Root>
+        <Table.Root my={"30px"} mx={"30px"}>
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeader>번호</Table.ColumnHeader>
@@ -154,49 +155,44 @@ export function BoardList() {
       ) : (
         <p> 조회된 결과가 없습니다.</p>
       )}
-      <HStack>
-        {/*    차크라유아이*/}
-        {/*<NativeSelectRoot*/}
-        {/*  onChange={(e) => setSearch({ ...search, type: e.target.value })}*/}
-        {/*>*/}
-        {/*  <NativeSelectField*/}
-        {/*    items={[*/}
-        {/*      { label: "전체", value: "all" },*/}
-        {/*      { label: "제목", value: "title" },*/}
-        {/*      { label: "본문", value: "content" },*/}
-        {/*    ]}*/}
-        {/*  />*/}
-        {/*</NativeSelectRoot>*/}
-        <Box>
-          <select
-            value={search.type}
-            onChange={(e) => setSearch({ ...search, type: e.target.value })}
-          >
-            <option value={"all"}>전체</option>
-            <option value={"title"}>제목</option>
-            <option value={"content"}>본문</option>
-          </select>
-        </Box>
-        <Input
-          value={search.keyword}
-          onChange={(e) =>
-            setSearch({ ...search, keyword: e.target.value.trim() })
-          }
-        />
-        <Button onClick={handelSearchClick}>검색</Button>
-      </HStack>
-      <PaginationRoot
-        onPageChange={handlePageChange}
-        count={count}
-        pageSize={10}
-        page={page}
-      >
-        <HStack>
-          <PaginationPrevTrigger />
-          <PaginationItems />
-          <PaginationNextTrigger />
+
+      <Center>
+        <HStack m={"30px"}>
+          <Box>
+            <select
+              value={search.type}
+              onChange={(e) => setSearch({ ...search, type: e.target.value })}
+            >
+              <option value={"all"}>전체</option>
+              <option value={"title"}>제목</option>
+              <option value={"content"}>본문</option>
+            </select>
+          </Box>
+          <Input
+            x={"50%"}
+            value={search.keyword}
+            onChange={(e) =>
+              setSearch({ ...search, keyword: e.target.value.trim() })
+            }
+          />
+          <Button onClick={handelSearchClick}>검색</Button>
         </HStack>
-      </PaginationRoot>
+      </Center>
+
+      <Center>
+        <PaginationRoot
+          onPageChange={handlePageChange}
+          count={count}
+          pageSize={10}
+          page={page}
+        >
+          <HStack>
+            <PaginationPrevTrigger />
+            <PaginationItems />
+            <PaginationNextTrigger />
+          </HStack>
+        </PaginationRoot>
+      </Center>
     </Box>
   );
 }
