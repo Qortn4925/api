@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Center,
-  Heading,
   HStack,
   Input,
   Table,
@@ -19,6 +18,7 @@ import {
 } from "../../components/ui/pagination.jsx";
 import { FaCommentDots, FaImages } from "react-icons/fa6";
 import { GoHeartFill } from "react-icons/go";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState([]);
@@ -107,7 +107,7 @@ export function BoardList() {
 
   return (
     <Box>
-      <Heading size={{ base: "xl", md: "2xl" }}> 게시물 목록 </Heading>
+      <MyHeading> 게시물 목록 </MyHeading>
       {boardList.length > 0 ? (
         <Table.Root my={"30px"} mx={"30px"}>
           <Table.Header>
@@ -125,6 +125,7 @@ export function BoardList() {
             {boardList.map((board) => (
               // 파라미터가 필요해서 , 함수를 넣어서  파라미터 넣어줌
               <Table.Row
+                _hover={{ cursor: "pointer" }}
                 key={board.id}
                 onClick={() => handleRowClick(board.id)}
               >
