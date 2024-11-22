@@ -186,5 +186,17 @@ public class BoardService {
         return board.getWriter().equals(authentication.getName());
     }
 
-    ;
+    public void like(Board board, Authentication authentication) {
+        // 이미 눌러져있으면 , 삭제 , 아니면 추가 > table에  아이디가 이름이 없으면 삭제 인거 아닌가
+        int cnt = mapper.deleteLikeByBoardIdAndMemberId(board.getId(), authentication.getName());
+        System.out.println("실행확인 ");
+        // 아니면 삽입
+        // 삭제 1,  아니면 0
+        if (cnt == 0) {
+            mapper.insertLike(board.getId(), authentication.getName());
+            System.out.println("insert 동작");
+        }
+    }
+
+
 }

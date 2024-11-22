@@ -2,6 +2,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Button,
+  Flex,
+  Heading,
+  HStack,
   Image,
   Input,
   Spinner,
@@ -24,6 +27,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { CommentContainer } from "../../components/comment/CommentContainer.jsx";
+import { GoHeart } from "react-icons/go";
 
 function ImageFileView({ files }) {
   return (
@@ -79,9 +83,31 @@ export function BoardView() {
       });
   };
 
+  const handleLikeClick = () => {
+    axios
+      .post("/api/board/like", {
+        id: board.id,
+      })
+      .then()
+      .catch()
+      .finally();
+  };
+
   return (
     <Box>
-      <h3> {board.id} 게시글 </h3>
+      <Flex>
+        <Heading me={"auto"}> {board.id} 번 게시글 </Heading>
+        <HStack>
+          <Box onClick={handleLikeClick}>
+            <Heading>
+              <GoHeart /> 3
+            </Heading>
+          </Box>
+          <Box>
+            <Heading> </Heading>
+          </Box>
+        </HStack>
+      </Flex>
       <Stack gap={5}>
         <Field label={"제목"}>
           <Input value={board.title} />

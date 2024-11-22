@@ -110,4 +110,18 @@ public interface BoardMapper {
               AND name = #{name}
             """)
     void deleteFileByBoardIdAndName(int id, String name);
+
+
+    @Delete("""
+                    delete from board_like
+                    where board_id =#{id}
+                    and member_id=#{name}
+            """)
+    int deleteLikeByBoardIdAndMemberId(int id, String name);
+
+    @Insert("""
+                Insert into board_like
+                values (#{id},#{name})
+            """)
+    int insertLike(int id, String name);
 }

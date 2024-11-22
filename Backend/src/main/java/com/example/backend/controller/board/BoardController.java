@@ -20,6 +20,14 @@ public class BoardController {
 
     final BoardService service;
 
+    @PostMapping("like")
+    @PreAuthorize("isAuthenticated()")
+    public void like(@RequestBody Board board
+            , Authentication authentication) {
+
+        service.like(board, authentication);
+    }
+
     //    @RequestBody 어노테이션을 사용하여 클라이언트에서 보내는 JSON 데이터를
 //    Java 객체로 변환하여 받을 수 있습니다. 예를 들어,
 //    클라이언트에서 사용자 정보를 보내고, 이를 Spring에서 처리하는 예시입니다.
