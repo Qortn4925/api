@@ -21,11 +21,12 @@ public interface BoardMapper {
 
     @Select("""
             <script>
-                SELECT b.id, b.title, b.writer, b.inserted ,count(distinct  c.id) as countComment ,count(DISTINCT f.name) as countFile
+                SELECT b.id, b.title, b.writer, b.inserted ,count(distinct  c.id) as countComment ,count(DISTINCT f.name) as countFile ,count(distinct l.member_id)as countLike
                 FROM 
                     board b left join comment c on b.id=c.board_id
                     left join board_file f 
                         on b.id=f.board_id
+                    left join board_like l on b.id=l.board_id
                 WHERE 
                     <trim prefixOverrides="OR">
                         <if test="searchType == 'all' or searchType == 'title'">
@@ -140,4 +141,17 @@ public interface BoardMapper {
                 where board_id=#{id} and Member_id =#{name}
             """)
     Map<String, Object> selectLikeByBoardIdAndMemberId(int id, String name);
+
+
+    @Delete("""
+                    delete from  board_like
+                    where id=#{id}
+            """)
+    int deleteLikeByBoardId(int id);
+
+    @Delete("""
+                delete from board_like
+                where member_id=#{id}
+            """)
+    int deleteLikeByMemberId(String id);
 }

@@ -131,7 +131,11 @@ public class BoardService {
         mapper.deleteFileByBoardId(id);
         // 실제 파일 > s3 파일,  database 상에 데이ㅓ 지우기
 
+        // 댓글 지우기
         commentMapper.deleteByBoardId(id);
+
+        // 좋아요 지우기
+        mapper.deleteLikeByBoardId(id);
 
         int cnt = mapper.deleteById(id);
         return cnt == 1;
