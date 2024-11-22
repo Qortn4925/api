@@ -16,6 +16,7 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function MemberInfo() {
   const [member, setMember] = useState(null);
@@ -64,9 +65,9 @@ export function MemberInfo() {
   }
 
   return (
-    <Box>
-      <h3>회원 정보</h3>
-      <Stack gap={5}>
+    <Box mx={"auto"} w={{ md: "550px" }}>
+      <MyHeading> 회원 정보 </MyHeading>
+      <Stack gap={5} my={"30px"}>
         <Field label={"아이디"}>
           <Input readOnly value={member.id} />
         </Field>

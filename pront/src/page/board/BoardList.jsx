@@ -106,7 +106,7 @@ export function BoardList() {
   }
 
   return (
-    <Box>
+    <Box w={{ md: "800px" }} mx={"auto"}>
       <MyHeading> 게시물 목록 </MyHeading>
       {boardList.length > 0 ? (
         <Table.Root my={"30px"} mx={"30px"}>

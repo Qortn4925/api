@@ -21,7 +21,7 @@ export function MemberList() {
   }
 
   return (
-    <Box>
+    <Box w={{ md: "800px" }} mx={"auto"}>
       <MyHeading> 회원 목록</MyHeading>
 
       <Table.Root m={"30px"}>

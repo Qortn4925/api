@@ -84,14 +84,16 @@ export function Navbar() {
           로그아웃
         </NavbarItem>
       )}
-      <NavbarItem onClick={() => navigate(`/member/${id}`)}>
-        <HStack>
-          <Icon>
-            <IoPerson />
-          </Icon>
-          <Text> {id} </Text>
-        </HStack>
-      </NavbarItem>
+      {isAuthenticated && (
+        <NavbarItem onClick={() => navigate(`/member/${id}`)}>
+          <HStack>
+            <Icon>
+              <IoPerson />
+            </Icon>
+            <Text> {id} </Text>
+          </HStack>
+        </NavbarItem>
+      )}
     </Flex>
   );
 }
