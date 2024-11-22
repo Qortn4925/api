@@ -1,4 +1,4 @@
-import { Box, Button, Input, Stack } from "@chakra-ui/react";
+import { Box, Button, HStack, Input, Stack } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { useContext, useState } from "react";
 import axios from "axios";
@@ -40,7 +40,7 @@ export function MemberLogin() {
   }
 
   return (
-    <Box w={{ md: "550px" }} mx={"auto"} my={"auto"}>
+    <Box mx={"auto"} w={{ md: "550px" }}>
       <MyHeading> 로그인 </MyHeading>
       <Stack my={30}>
         <Field label={"아이디"}>
@@ -55,9 +55,21 @@ export function MemberLogin() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Field>
-        <Box>
-          <Button onClick={handleLoginClick}> 로그인</Button>
-        </Box>
+        <HStack gap={5}>
+          <Box>
+            <Button onClick={handleLoginClick}> 로그인</Button>
+          </Box>
+          <Box>
+            <Button
+              onClick={() => {
+                navigate("/member/signup");
+              }}
+            >
+              {" "}
+              회원가입
+            </Button>
+          </Box>
+        </HStack>
       </Stack>
     </Box>
   );
