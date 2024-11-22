@@ -27,7 +27,8 @@ import {
 } from "../../components/ui/dialog.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { CommentContainer } from "../../components/comment/CommentContainer.jsx";
-import { GoHeart } from "react-icons/go";
+import { GoHeart, GoHeartFill } from "react-icons/go";
+import { ToggleTip } from "../../components/ui/toggle-tip.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -53,11 +54,20 @@ export function BoardView() {
   const [board, setBoard] = useState(null);
   // const [files, setFiles] = useState([]);
   const navigate = useNavigate();
-  const { hasAccess } = useContext(AuthenticationContext);
+  const { hasAccess, isAuthenticated } = useContext(AuthenticationContext);
+  const [likeTooltipOpen, setLikeTooltipOpen] = useState(false);
+  const [like, setLike] = useState({ like: false, count: 0 });
   useEffect(() => {
     axios.get(`/api/board/view/${id}`).then((res) => {
       setBoard(res.data);
     });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`/api/board/like/${id}`)
+      .then((res) => res.data)
+      .then((data) => setLike(data));
   }, []);
   if (board === null) {
     return <Spinner />;
@@ -84,13 +94,19 @@ export function BoardView() {
   };
 
   const handleLikeClick = () => {
-    axios
-      .post("/api/board/like", {
-        id: board.id,
-      })
-      .then()
-      .catch()
-      .finally();
+    if (isAuthenticated) {
+      axios
+        .post("/api/board/like", {
+          id: board.id,
+        })
+        .then((res) => res.data)
+        .then((data) => setLike(data))
+        .catch()
+        .finally();
+    } else {
+      // tool tip 보여주기
+      setLikeTooltipOpen(!likeTooltipOpen);
+    }
   };
 
   return (
@@ -99,12 +115,15 @@ export function BoardView() {
         <Heading me={"auto"}> {board.id} 번 게시글 </Heading>
         <HStack>
           <Box onClick={handleLikeClick}>
-            <Heading>
-              <GoHeart /> 3
-            </Heading>
+            <ToggleTip
+              open={likeTooltipOpen}
+              content={"로그인 후 이용해 주세요"}
+            >
+              <Heading>{like.like ? <GoHeartFill /> : <GoHeart />}</Heading>
+            </ToggleTip>
           </Box>
           <Box>
-            <Heading> </Heading>
+            <Heading> {like.count}</Heading>
           </Box>
         </HStack>
       </Flex>

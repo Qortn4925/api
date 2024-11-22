@@ -20,13 +20,21 @@ public class BoardController {
 
     final BoardService service;
 
+    @GetMapping("like/{id}")
+    public Map<String, Object> getLike(@PathVariable int id, Authentication auth) {
+
+        return service.getLike(id, auth);
+
+    }
+
     @PostMapping("like")
     @PreAuthorize("isAuthenticated()")
-    public void like(@RequestBody Board board
+    public Map<String, Object> like(@RequestBody Board board
             , Authentication authentication) {
 
-        service.like(board, authentication);
+        return service.like(board, authentication);
     }
+
 
     //    @RequestBody 어노테이션을 사용하여 클라이언트에서 보내는 JSON 데이터를
 //    Java 객체로 변환하여 받을 수 있습니다. 예를 들어,

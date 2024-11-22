@@ -162,8 +162,6 @@ public class BoardService {
                         .key(objectKey)
                         .acl(ObjectCannedACL.PUBLIC_READ)
                         .build();
-
-
                 try {
                     s3.putObject(por, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
                 } catch (IOException e) {
@@ -186,7 +184,7 @@ public class BoardService {
         return board.getWriter().equals(authentication.getName());
     }
 
-    public void like(Board board, Authentication authentication) {
+    public Map<String, Object> like(Board board, Authentication authentication) {
         // 이미 눌러져있으면 , 삭제 , 아니면 추가 > table에  아이디가 이름이 없으면 삭제 인거 아닌가
         int cnt = mapper.deleteLikeByBoardIdAndMemberId(board.getId(), authentication.getName());
         System.out.println("실행확인 ");
@@ -196,7 +194,24 @@ public class BoardService {
             mapper.insertLike(board.getId(), authentication.getName());
             System.out.println("insert 동작");
         }
+        int countLike = mapper.countLike(board.getId());
+        Map<String, Object> result = Map.of("like", (cnt == 0), "count", countLike);
+        return result;
     }
 
 
+    public Map<String, Object> getLike(int id, Authentication auth) {
+        boolean like = false;
+        if (auth == null) {
+
+        } else {
+            Map<String, Object> row = mapper.selectLikeByBoardIdAndMemberId(id, auth.getName());
+            if (row != null) {
+                like = true;
+            }
+        }
+        int countLike = mapper.countLike(id);
+        Map<String, Object> result = Map.of("like", (like), "count", countLike);
+        return result;
+    }
 }
