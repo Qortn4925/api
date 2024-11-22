@@ -91,28 +91,32 @@ export function CommentItem({ comment, onDeleteClick, onEditClick }) {
   const { hasAccess } = useContext(AuthenticationContext);
   console.log(hasAccess());
   return (
-    <HStack border={"1px solid black"} m={5}>
-      <Box w={"80%"}>
-        <Flex justify={"space-between"}>
-          <h3>작성자: {comment.memberId}</h3>
-          <h4>작성시간: {comment.inserted}</h4>
-        </Flex>
-        {/* 댓글 줄 바꿈 하는 경우가 많은데 , 
-         html은 공백을 안 먹어서 ,  pre 태그 사용 하거나 ,  
-         chakra 에서도 사용하고 싶으면 ,  css 속성으로 whiteSpace:pre 로*/}
-        <p style={{ whiteSpace: "pre" }}> 내용:{comment.comment}</p>
+    <Flex border={"1px solid black"} p={2.5} direction={"column"}>
+      <Box>
+        <h5 css={{ paddingY: "5px" }}> {comment.memberId}</h5>
       </Box>
 
-      {!hasAccess() && (
-        <Box w={"20%"}>
-          <EditButton comment={comment} onEditClick={onEditClick} />
-          <DeleteButton
-            onClick={() => {
-              onDeleteClick(comment.id);
-            }}
-          />
+      <HStack h={"80%"}>
+        {/*<h4>작성시간: {comment.inserted}</h4>*/}
+
+        {/* 댓글 줄 바꿈 하는 경우가 많은데 ,
+         html은 공백을 안 먹어서 ,  pre 태그 사용 하거나 ,
+         chakra 에서도 사용하고 싶으면 ,  css 속성으로 whiteSpace:pre 로*/}
+        <Box w={"80%"}>
+          <p style={{ whiteSpace: "pre" }}> 내용 {comment.comment}</p>
         </Box>
-      )}
-    </HStack>
+
+        {!hasAccess() && (
+          <HStack>
+            <EditButton comment={comment} onEditClick={onEditClick} />
+            <DeleteButton
+              onClick={() => {
+                onDeleteClick(comment.id);
+              }}
+            />
+          </HStack>
+        )}
+      </HStack>
+    </Flex>
   );
 }

@@ -15,7 +15,7 @@ function NavbarItem({ children, ...rest }) {
         paddingY: "10px",
       }}
       _hover={{
-        bgColor: "cyan.500",
+        bgColor: "green.500",
         cursor: "pointer",
       }}
       {...rest}

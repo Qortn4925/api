@@ -1,10 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Box, Input, Stack, Textarea } from "@chakra-ui/react";
+import { Box, Card, Input, Stack, Text, Textarea } from "@chakra-ui/react";
 import { Field } from "../../components/ui/field.jsx";
 import { Button } from "../../components/ui/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../../components/ui/toaster.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function BoardAdd() {
   const [title, setTitle] = useState("");
@@ -66,9 +67,17 @@ export function BoardAdd() {
     }
     sumOfFileSize += file.size;
     filesList.push(
-      <li style={{ color: file.size > 1024 * 1024 ? "red" : "black" }}>
-        {file.name} ({Math.floor(file.size / 1024)} kb)
-      </li>,
+      <Card.Root size={"sm"}>
+        <Card.Body>
+          <Text
+            fontWeight={"bold"}
+            truncate
+            css={{ color: file.size > 1024 * 1024 ? "red" : "black" }}
+          >
+            {file.name}({Math.floor(file.size / 1024)} kb)
+          </Text>
+        </Card.Body>
+      </Card.Root>,
     );
   }
   let fileInputInvalid = false;
@@ -77,15 +86,17 @@ export function BoardAdd() {
     fileInputInvalid = true;
   }
   return (
-    <Box>
-      <h3> 안녕</h3>
-      <Stack gap={5}>
-        <Field>
+    <Box w={{ md: "550px" }} mx={"auto"}>
+      <MyHeading> 작성</MyHeading>
+
+      <Stack gap={5} my={"30px"}>
+        <Field label={"제목"}>
           <Input value={title} onChange={(e) => setTitle(e.target.value)} />
         </Field>
         <Field label={"본문"}>
           <Textarea
             value={content}
+            h={200}
             onChange={(e) => setContent(e.target.value)}
           />
         </Field>

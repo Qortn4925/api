@@ -29,6 +29,7 @@ import { AuthenticationContext } from "../../components/context/AuthenticationPr
 import { CommentContainer } from "../../components/comment/CommentContainer.jsx";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { ToggleTip } from "../../components/ui/toggle-tip.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 function ImageFileView({ files }) {
   return (
@@ -38,7 +39,7 @@ function ImageFileView({ files }) {
           key={file.name}
           src={file.src}
           border={"1px solid black"}
-          m={3}
+          my={3}
         />
       ))}
     </Box>
@@ -110,10 +111,10 @@ export function BoardView() {
   };
 
   return (
-    <Box>
+    <Box w={{ md: "550px" }} m={"auto"}>
       <Flex>
-        <Heading me={"auto"}> {board.id} 번 게시글 </Heading>
-        <HStack>
+        <MyHeading me={"auto"}> {board.id} 번 게시글 </MyHeading>
+        <HStack my={"30px"}>
           <Box onClick={handleLikeClick}>
             <ToggleTip
               open={likeTooltipOpen}
@@ -132,7 +133,7 @@ export function BoardView() {
           <Input value={board.title} />
         </Field>
         <Field label={"본문"}>
-          <Textarea value={board.content} />
+          <Textarea value={board.content} h={200} />
         </Field>
         <ImageFileView files={board.fileSrc} />
         <Field label={"작성자"}>
@@ -143,36 +144,40 @@ export function BoardView() {
         </Field>
         {hasAccess(board.writer) && (
           <Box>
-            <DialogRoot>
-              <DialogTrigger asChild>
-                <Button bg={"red.700"} variant={"outline"}>
-                  {" "}
-                  삭제
+            <HStack>
+              <Box>
+                <Button
+                  onClick={() => navigate(`/edit/${board.id}`)}
+                  bg={"cyan"}
+                >
+                  수정
                 </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle> 삭제 확인</DialogTitle>
-                </DialogHeader>
-                <DialogBody>
-                  <p>{board.id}번 게시물을 삭제하시겠습니까</p>
-                </DialogBody>
-                <DialogFooter>
-                  <DialogActionTrigger>
-                    <Button variant={"outline"}>취소</Button>
-                  </DialogActionTrigger>
-
-                  <Button bg={"red.700"} onClick={handleDeleteClick}>
+              </Box>
+              <DialogRoot>
+                <DialogTrigger asChild>
+                  <Button bg={"red"} variant={"outline"}>
                     삭제
                   </Button>
-                </DialogFooter>
-              </DialogContent>
-            </DialogRoot>
-            <Box>
-              <Button onClick={() => navigate(`/edit/${board.id}`)} bg={"cyan"}>
-                수정
-              </Button>
-            </Box>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle> 삭제 확인</DialogTitle>
+                  </DialogHeader>
+                  <DialogBody>
+                    <p>{board.id}번 게시물을 삭제하시겠습니까</p>
+                  </DialogBody>
+                  <DialogFooter>
+                    <DialogActionTrigger>
+                      <Button variant={"outline"}>취소</Button>
+                    </DialogActionTrigger>
+
+                    <Button bg={"red.700"} onClick={handleDeleteClick}>
+                      삭제
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </DialogRoot>
+            </HStack>
           </Box>
         )}
       </Stack>

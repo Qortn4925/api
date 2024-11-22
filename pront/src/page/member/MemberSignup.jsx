@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toaster } from "../../components/ui/toaster.jsx";
 import { useNavigate } from "react-router-dom";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 export function MemberSignup() {
   const [id, setId] = useState("");
@@ -99,9 +100,9 @@ export function MemberSignup() {
   }
 
   return (
-    <Box>
-      <h3> 회원가입</h3>
-      <Stack gap={5}>
+    <Box mx={"auto"} w={{ md: "550px" }}>
+      <MyHeading> 회원 가입 </MyHeading>
+      <Stack gap={5} my={30}>
         <Field label={"아이디"}>
           <Group attached w={"100%"}>
             <Input value={id} onChange={(e) => setId(e.target.value)} />

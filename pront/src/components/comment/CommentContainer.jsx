@@ -1,9 +1,10 @@
-import { Box, Stack } from "@chakra-ui/react";
+import { Badge, Box, HStack, Stack } from "@chakra-ui/react";
 import { CommentInput } from "./CommentInput.jsx";
 import { CommentList } from "./CommentList.jsx";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toaster } from "../ui/toaster.jsx";
+import { FaCommentDots } from "react-icons/fa6";
 
 export function CommentContainer({ boardId }) {
   const [commentList, setCommentList] = useState([]);
@@ -17,6 +18,7 @@ export function CommentContainer({ boardId }) {
       .then((res) => res.data)
       .then((data) => setCommentList(data));
   }, [process]);
+  let countComment = commentList.length;
 
   function handleSaveClick(comment) {
     setProcess(true);
@@ -66,11 +68,17 @@ export function CommentContainer({ boardId }) {
   }
 
   return (
-    <Box>
+    <Box my={"10px"}>
       <Stack gap={5}>
-        <h3> 댓글</h3>
+        <h1> 댓글 작성</h1>
 
         <CommentInput boardId={boardId} onSaveClick={handleSaveClick} />
+        <HStack>
+          <h1> 댓글</h1>
+          <Badge variant={"solid"} colorPalette={"yellow"}>
+            <FaCommentDots /> {countComment}
+          </Badge>
+        </HStack>
         <CommentList
           boardId={boardId}
           commentList={commentList}
