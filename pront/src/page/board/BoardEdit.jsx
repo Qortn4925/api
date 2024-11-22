@@ -25,6 +25,7 @@ import {
 import { toaster } from "../../components/ui/toaster.jsx";
 import { AuthenticationContext } from "../../components/context/AuthenticationProvider.jsx";
 import { Switch } from "../../components/ui/switch.jsx";
+import { MyHeading } from "../../components/root/MyHeading.jsx";
 
 function ImageView({ files, onRemoveSwitchClick }) {
   return (
@@ -33,6 +34,7 @@ function ImageView({ files, onRemoveSwitchClick }) {
         <HStack key={file.name}>
           <Switch
             variant={"solid"}
+            colorPalette={"red"}
             onCheckedChange={(e) => {
               onRemoveSwitchClick(e.checked, file.name);
             }}
@@ -93,8 +95,8 @@ export function BoardEdit() {
   );
 
   return (
-    <Box>
-      <h3>{id}번 게시물 수정 화면</h3>
+    <Box w={{ md: "550px" }} mx={"auto"}>
+      <MyHeading>{board.id}번 게시물 수정 </MyHeading>
       <Stack gap={5}>
         <Field label={"제목"}>
           <Input
