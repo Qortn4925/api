@@ -34,7 +34,6 @@ function ImageView({ files, onRemoveSwitchClick }) {
           <Switch
             variant={"solid"}
             onCheckedChange={(e) => {
-              console.log(e.checked);
               onRemoveSwitchClick(e.checked, file.name);
             }}
           />
@@ -53,13 +52,13 @@ export function BoardEdit() {
   const [open, setOpen] = useState(false);
   const { hasAccess } = useContext(AuthenticationContext);
   const [removeFiles, setRemoveFiles] = useState([]);
+  const [uploadFiles, setUploadFiles] = useState([]);
 
   useEffect(() => {
     axios.get(`/api/board/view/${id}`).then((res) => setBoard(res.data));
   }, []);
 
   const handleRemoveSwitchClick = (checked, fileName) => {
-    console.log("버튼 클릭 확인");
     if (checked) {
       setRemoveFiles([...removeFiles, fileName]);
     } else {
@@ -70,7 +69,13 @@ export function BoardEdit() {
   const handleSave = () => {
     setProgress(true);
     axios
-      .put(`/api/board/update`, board)
+      .putForm(`/api/board/update`, {
+        id: board.id,
+        title: board.title,
+        content: board.content,
+        removeFiles,
+        uploadFiles,
+      })
       .then((res) => {
         const data = res.data;
         toaster.create({
@@ -107,6 +112,24 @@ export function BoardEdit() {
           files={board.fileSrc}
           onRemoveSwitchClick={handleRemoveSwitchClick}
         />
+        <Box>
+          <Box>
+            <input
+              type={"file"}
+              accept={"image/*"}
+              multiple
+              onChange={(e) => {
+                console.log(e.target.files);
+                setUploadFiles(e.target.files);
+              }}
+            />
+            {Array.from(uploadFiles).map((file) => (
+              <li key={file.name}>
+                {file.name}(Math.floor{file.size / 1024}kb
+              </li>
+            ))}
+          </Box>
+        </Box>
         {hasAccess(board.writer) && (
           <Box>
             <DialogRoot open={open} onOpenChange={(e) => setOpen(e.open)}>

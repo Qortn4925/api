@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -80,11 +81,16 @@ public class BoardController {
 
     @PutMapping("update")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Map<String, Object>> update(@RequestBody Board board, Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> update(
+
+            @RequestParam(value = "uploadFiles[]", required = false) MultipartFile[] uploadFiles,
+            @RequestParam(value = "removeFiles[]", required = false) List<String> removeFiles,
+            Board board, Authentication authentication) {
+        System.out.println("uploadFiles = " + uploadFiles);
 
         if (service.hasAccess(board.getId(), authentication)) {
             if (service.validate(board)) {
-                if (service.update(board)) {
+                if (service.update(board, removeFiles, uploadFiles)) {
                     //  ok() > 상태가  200번 대면 >  응답개체본문빌더 객체를 만들어줌 ,  > body  응답 본문에  붙여서 나가는거
 
                     return ResponseEntity.ok().body(Map.of("message", Map.of("type", "success",
