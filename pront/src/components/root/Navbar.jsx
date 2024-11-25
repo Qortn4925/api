@@ -38,7 +38,7 @@ export function Navbar() {
         <Icon hideFrom={"sm"}>
           <FaHome />
         </Icon>
-        <Text hideBelow={"sm"}> home</Text>
+        <Text hideBelow={"sm"}> homezzzzzzzzzzzzz</Text>
       </NavbarItem>
       {isAuthenticated && (
         <NavbarItem onClick={() => navigate("/add")}>
